@@ -9,9 +9,9 @@ All files in this repository are licensed under 4-clause BSD, see LICENSE file f
 
 Dependencies
 -------------
-1. jQuery JsonRpcClient Plugin
-	a. jQuery
-	b. jQuery JSON plugin
+* jQuery JsonRpcClient Plugin
+  * jQuery
+  * jQuery JSON plugin
 
 
 Sample Usage
