@@ -3,7 +3,7 @@
  * 
  * This wrapper was written by Tamer Saadeh <tamer@tamersaadeh.com>, 2014
  * 
- * Version: 0.1.0
+ * Version: 0.1.1
  * 
  * This file is licensed under 4-clause BSD, see LICENSE file for more details
  */
@@ -30,7 +30,7 @@
 	 */
 	var successHandler = function(e) {
 		// define (or otherwise) console.log
-		console = typeof console === 'undefined' ? {
+		console = console == undefined ? {
 			log : function(str) {
 				alert(str)
 			}
@@ -39,6 +39,50 @@
 			console.log("XBMC API:" + JSON.stringify(e))
 		}, 0)
 	}
+
+	/**
+	 * Error strings:
+	 * 
+	 * @param ERR_NOT_INITIALIZED
+	 *            when XBMC is not initialized
+	 * @param ERR_TYPE
+	 *            when the type parameter is missing
+	 * @param ERR_PATH
+	 *            when the path parameter is missing
+	 * @param ERR_MEDIA
+	 *            when the media parameter is missing
+	 * @param ERR_DIRECTORY
+	 *            when the directory parameter is missing
+	 * @param ERR_EPISODE_ID
+	 *            when episode ID as a parameter is missing
+	 * @param ERR_SET_ID
+	 *            when the set ID parameter is missing
+	 * @param ERR_MOVIE_ID
+	 *            when the movie ID parameter is missing
+	 * @param ERR_MUSIC_VIDEO_ID
+	 *            when the music video ID parameter is missing
+	 * @param ERR_TV_SHOW_ID
+	 *            when the TV show ID parameter is missing
+	 * @param ERR_ALBUM_ID
+	 *            when the album ID parameter is missing
+	 * @param ERR_ARTIST_ID
+	 *            when the artist ID parameter is missing
+	 * @param ERR_SONG_ID
+	 *            when the song ID parameter is missing
+	 */
+	var ERR_NOT_INITIALIZED = "XBMC API not initialized! Call `new XBMC(hostname, port)`!"
+	var ERR_TYPE = "Type is not provided"
+	var ERR_PATH = "Path is not provided"
+	var ERR_MEDIA = "Media is not provided"
+	var ERR_DIRECTORY = "Directory is not provided"
+	var ERR_EPISODE_ID = "Episode ID is not provided"
+	var ERR_SET_ID = "Set ID is not provided"
+	var ERR_MOVIE_ID = "Movie ID is not provided"
+	var ERR_MUSIC_VIDEO_ID = "Music Video ID is not provided"
+	var ERR_TV_SHOW_ID = "TV Show ID is not provided"
+	var ERR_ALBUM_ID = "Album ID is not provided"
+	var ERR_ARTIST_ID = "Artist ID is not provided"
+	var ERR_SONG_ID = "Song ID is not provided"
 
 	/**
 	 * Global object used to initialize and access the XBMC API
@@ -72,7 +116,7 @@
 	// TODO: needs more testing
 	var VideoLibrary = function() {
 		if (rpc == undefined || rpc == null) {
-			throw "XBMC API not initialized! Call `new XBMC(hostname, port)`!"
+			throw ERR_NOT_INITIALIZED
 		}
 	}
 
@@ -94,7 +138,7 @@
 		},
 		GetEpisodeDetails : function(episodeId, properties, successCB, errorCB) {
 			if (episodeId == undefined) {
-				throw "Episode ID is not provided"
+				throw ERR_EPISODE_ID
 			}
 			var params = [ episodeId ]
 			if (properties != undefined) {
@@ -130,7 +174,7 @@
 		},
 		GetGenres : function(type, properties, limits, sort, successCB, errorCB) {
 			if (type == undefined) {
-				throw "Type is not provided"
+				throw ERR_TYPE
 			}
 			var params = [ type ]
 			if (properties != undefined) {
@@ -148,7 +192,7 @@
 		},
 		GetMovieDetails : function(movieId, properties, successCB, errorCB) {
 			if (movieId == undefined) {
-				throw "Movie ID is not provided"
+				throw ERR_MOVIE_ID
 			}
 			var params = [ movieId ]
 			if (properties != undefined) {
@@ -160,7 +204,7 @@
 		},
 		GetMovieSetDetails : function(setId, properties, movies, successCB, errorCB) {
 			if (setId == undefined) {
-				throw "Set ID is not provided"
+				throw ERR_SET_ID
 			}
 			var params = [ setId ]
 			if (properties != undefined) {
@@ -207,7 +251,7 @@
 		},
 		GetMusicVideoDetails : function(musicVideoId, properties, successCB, errorCB) {
 			if (musicVideoId == undefined) {
-				throw "Music Video ID is not provided"
+				throw ERR_MUSIC_VIDEO_ID
 			}
 			var params = [ musicVideoId ]
 			if (properties != undefined) {
@@ -282,7 +326,7 @@
 		},
 		GetSeasons : function(tvShowId, properties, limits, sort, successCB, errorCB) {
 			if (tvShowId == undefined) {
-				throw "TV Show ID is not provided"
+				throw ERR_TV_SHOW_ID
 			}
 			var params = [ tvShowId ]
 			if (properties != undefined) {
@@ -300,7 +344,7 @@
 		},
 		GetTVShowDetails : function(tvShowId, properties, successCB, errorCB) {
 			if (tvShowId == undefined) {
-				throw "TV Show ID is not provided"
+				throw ERR_TV_SHOW_ID
 			}
 			var params = [ episodeId ]
 			if (properties != undefined) {
@@ -330,7 +374,7 @@
 		},
 		RemoveEpisode : function(episodeId, successCB, errorCB) {
 			if (tvShowId == undefined) {
-				throw "Episode ID is not provided"
+				throw ERR_EPISODE_ID
 			}
 			var params = [ tvShowId ]
 			var success = successCB || successHandler
@@ -339,7 +383,7 @@
 		},
 		RemoveMovie : function(movieId, successCB, errorCB) {
 			if (movieId == undefined) {
-				throw "Movie ID is not provided"
+				throw ERR_MOVIE_ID
 			}
 			var params = [ movieId ]
 			var success = successCB || successHandler
@@ -348,7 +392,7 @@
 		},
 		RemoveMusicVideo : function(musicVideoId, successCB, errorCB) {
 			if (musicVideoId == undefined) {
-				throw "Music Video ID is not provided"
+				throw ERR_MUSIC_VIDEO_ID
 			}
 			var params = [ musicVideoId ]
 			var success = successCB || successHandler
@@ -357,7 +401,7 @@
 		},
 		RemoveTVShow : function(tvShowId, successCB, errorCB) {
 			if (tvShowId == undefined) {
-				throw "TV Show ID is not provided"
+				throw ERR_TV_SHOW_ID
 			}
 			var params = [ tvShowId ]
 			var success = successCB || successHandler
@@ -376,7 +420,7 @@
 		SetEpisodeDetails : function(episodeId, title, playCount, runTime, director, plot, rating, votes, lastPlayed, writer, firstAired,
 				productionCode, season, episode, originalTitle, thumbnail, fanart, art, successCB, errorCB) {
 			if (episodeId == undefined) {
-				throw "Episode ID is not provided"
+				throw ERR_EPISODE_ID
 			}
 			var params = [ episodeId ]
 			if (title != undefined) {
@@ -438,7 +482,7 @@
 				lastPlayed, originalTitle, trailer, tagLine, plotOutline, writer, country, top250, sortTitle, set, showLink, thumbnail, fanart, tag,
 				art, successCB, errorCB) {
 			if (movieId == undefined) {
-				throw "Movie ID is not provided"
+				throw ERR_MOVIE_ID
 			}
 			var params = [ movieId ]
 			if (title != undefined) {
@@ -529,7 +573,7 @@
 		SetMusicVideoDetails : function(musicVideoId, title, playCount, runTime, director, studio, year, plot, album, artist, genre, track,
 				lastPlayed, thumbnail, fanart, tag, art, successCB, errorCB) {
 			if (musicVideoId == undefined) {
-				throw "Music Video ID is not provided"
+				throw ERR_MUSIC_VIDEO_ID
 			}
 			var params = [ musicVideoId ]
 			if (title != undefined) {
@@ -587,7 +631,7 @@
 		SetTVShowDetails : function(tvShowId, title, playCount, studio, plot, rating, mpaa, imdbNumber, premiered, votes, lastPlayed, originalTitle,
 				sortTitle, episodeGuide, thumbnail, fanart, tag, art, successCB, errorCB) {
 			if (tvShowId == undefined) {
-				throw "TV Show ID is not provided"
+				throw ERR_TV_SHOW_ID
 			}
 			var params = [ tvShowId ]
 			if (title != undefined) {
@@ -673,7 +717,7 @@
 			episodeDetails, successCB, errorCB) {
 		var episodeId = episodeDetails.episodeid
 		if (episodeId == undefined) {
-			throw "Episode ID is not provided"
+			throw ERR_EPISODE_ID
 		}
 		var title = episodeDetails.title
 		var playCount = episodeDetails.playcount
@@ -699,7 +743,7 @@
 			movieDetails, successCB, errorCB) {
 		var movieId = movieDetails.episodeid
 		if (movieId == undefined) {
-			throw "Movie ID is not provided"
+			throw ERR_MOVIE_ID
 		}
 		var title = movieDetails.title
 		var playCount = movieDetails.playcount
@@ -736,7 +780,7 @@
 			VideoLibrary.prototype.setMusicVideoDetailsByObject = function(musicVidioDetails, successCB, errorCB) {
 				var musicVideoId = musicVidioDetails.musicvideoid
 				if (musicVideoId == undefined) {
-					throw "Music Video is not provided"
+					throw ERR_MUSIC_VIDEO_ID
 				}
 				var title = musicVidioDetails.title
 				var playCount = musicVidioDetails.playcount
@@ -761,7 +805,7 @@
 	VideoLibrary.prototype.setTVShowDetailsByObject = function(tvShowDetails, successCB, errorCB) {
 		var tvShowId = tvShowDetails.tvshowid
 		if (tvShowId == undefined) {
-			throw "TV Show ID is not provided"
+			throw ERR_TV_SHOW_ID
 		}
 		var title = tvShowDetails.title
 		var playCount = tvShowDetails.playcount
@@ -791,7 +835,7 @@
 	// TODO: needs testing
 	var AudioLibrary = function() {
 		if (rpc == undefined || rpc == null) {
-			throw "XBMC API not initialized! Call `new XBMC(hostname, port)`!"
+			throw ERR_NOT_INITIALIZED
 		}
 	}
 
@@ -813,7 +857,7 @@
 		},
 		GetAlbumDetails : function(albumId, properties, successCB, errorCB) {
 			if (albumId == undefined) {
-				throw "Album ID is not provided"
+				throw ERR_ALBUM_ID
 			}
 			var params = [ albumId ]
 			if (properties != undefined) {
@@ -843,7 +887,7 @@
 		},
 		GetArtistDetails : function(artiestID, properties, successCB, errorCB) {
 			if (artiestID == undefined) {
-				throw "Artist ID is not provided"
+				throw ERR_ARTIST_ID
 			}
 			var params = [ artiestID ]
 			if (properties != undefined) {
@@ -855,7 +899,7 @@
 		},
 		GetArtist : function(albumArtistsOnly, properties, limits, sort, filter, successCB, errorCB) {
 			if (type == undefined) {
-				throw "Type is not provided"
+				throw ERR_TYPE
 			}
 			var params = [ type ]
 			if (albumArtistsOnly != undefined) {
@@ -956,7 +1000,7 @@
 		},
 		GetSongDetails : function(songId, properties, successCB, errorCB) {
 			if (songId == undefined) {
-				throw "Song ID is not provided"
+				throw ERR_SONG_ID
 			}
 			var params = [ songId ]
 			if (properties != undefined) {
@@ -995,7 +1039,7 @@
 		},
 		SetAlbumDetails : function(albumId, title, artist, description, genre, theme, mood, style, type, albumLabel, rating, year, successCB, errorCB) {
 			if (albumId == undefined) {
-				throw "Album ID is not provided"
+				throw ERR_ALBUM_ID
 			}
 			var params = [ albumId ]
 			if (title != undefined) {
@@ -1038,7 +1082,7 @@
 		SetArtistDetails : function(artistId, artist, instrument, style, mood, born, formed, description, genre, died, disbanded, yearsActive,
 				successCB, errorCB) {
 			if (artistId == undefined) {
-				throw "Artist ID is not provided"
+				throw ERR_ARTIST_ID
 			}
 			var params = [ artistId ]
 			if (artist != undefined) {
@@ -1081,7 +1125,7 @@
 		SetSongDetails : function(songId, title, artist, albumArtist, genre, year, rating, album, track, disc, duration, comment, musicBrainzTrackId,
 				musicBrainzArtistId, musicBrainzAlbumId, musicBrainzAlbumArtistId, successCB, errorCB) {
 			if (songId == undefined) {
-				throw "Song ID is not provided"
+				throw ERR_SONG_ID
 			}
 			var params = [ songId ]
 			if (title != undefined) {
@@ -1155,7 +1199,7 @@
 	AudioLibrary.prototype.setAlbumDetailsByObject = function(albumDetails, successCB, errorCB) {
 		var albumId = albumDetails.albumid
 		if (albumId == undefined) {
-			throw "Album ID is not provided"
+			throw ERR_ALBUM_ID
 		}
 		var title = albumDetails.title
 		var artist = albumDetails.artist
@@ -1174,7 +1218,7 @@
 	AudioLibrary.prototype.setArtistDetailsByObject = function(artistDetails, successCB, errorCB) {
 		var artistId = artistDetails.artistid
 		if (artistId == undefined) {
-			throw "Artist ID is not provided"
+			throw ERR_ARTIST_ID
 		}
 		var artist = artistDetails.artist
 		var instrument = artistDetails.instrument
@@ -1193,7 +1237,7 @@
 	AudioLibrary.prototype.setSongDetailsByObject = function(songDetails, successCB, errorCB) {
 		var songId = songDetails.songid
 		if (songId == undefined) {
-			throw "Song ID is not provided"
+			throw ERR_SONG_ID
 		}
 		var title = songDetails.title
 		var artist = songDetails.artist
@@ -1222,7 +1266,7 @@
 	// TODO: needs more testing
 	var Files = function() {
 		if (rpc == undefined || rpc == null) {
-			throw "XBMC API not initialized! Call `new XBMC(hostname, port)`!"
+			throw ERR_NOT_INITIALIZED
 		}
 	}
 
@@ -1230,7 +1274,7 @@
 	Files.prototype = {
 		Download : function(path, successCB, errorCB) {
 			if (path == undefined) {
-				throw "Path is not provided"
+				throw ERR_PATH
 			}
 			var params = [ path ]
 			var success = successCB || successHandler
@@ -1239,7 +1283,7 @@
 		},
 		GetDirectory : function(directory, files, properties, sort, successCB, errorCB) {
 			if (direcotry == undefined) {
-				throw "Directory is not provided"
+				throw ERR_DIRECTORY
 			}
 			var params = [ direcotry ]
 			if (files != undefined) {
@@ -1257,7 +1301,7 @@
 		},
 		GetFileDetails : function(media, files, properties, successCB, errorCB) {
 			if (media == undefined) {
-				throw "Media is not provided"
+				throw ERR_MEDIA
 			}
 			var params = [ media ]
 			if (files != undefined) {
@@ -1272,7 +1316,7 @@
 		},
 		GetSources : function(media, limits, sort, successCB, errorCB) {
 			if (media == undefined) {
-				throw "Media is not provided"
+				throw ERR_MEDIA
 			}
 			var params = [ media ]
 			if (limits != undefined) {
@@ -1287,7 +1331,7 @@
 		},
 		PrepareDownload : function(path, successCB, errorCB) {
 			if (path == undefined) {
-				throw "Path is not provided"
+				throw ERR_PATH
 			}
 			var params = [ path ]
 			var success = successCB || successHandler
