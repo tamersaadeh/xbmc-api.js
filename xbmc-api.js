@@ -1,10 +1,9 @@
 /*
- * 
  * XBMC JSON-RPC API v6 (XBMC 12 and newer) wrapper
  * 
  * This wrapper was written by Tamer Saadeh <tamer@tamersaadeh.com>, 2014
  * 
- * Version: 0.0.2
+ * Version: 0.1.0
  * 
  * This file is licensed under 4-clause BSD, see LICENSE file for more details
  */
@@ -12,23 +11,10 @@
 (function(window) {
 	"use strict"
 
+	/**
+	 * Private object for access the JSON-RPC API
+	 */
 	var rpc
-
-	var XBMC = function(hostname, port) {
-		var h = hostname || window.location.hostname
-		// TODO: I need to some how figure this port
-		var p = port || 9090
-
-		rpc = new $.JsonRpcClient({
-			ajaxUrl : '/jsonrpc',
-			socketUrl : 'ws://' + h + ':' + p + '/'
-		})
-
-		// To ensure the connection stays open, we ping it every 500ms
-		window.setInterval(function() {
-			rpc.call('JSONRPC.Ping', [], successHandler, errorHandler)
-		}, 500)
-	}
 
 	/**
 	 * Default error handler (throws error).
@@ -52,6 +38,30 @@
 		setTimeout(function() {
 			console.log("XBMC API:" + JSON.stringify(e))
 		}, 0)
+	}
+
+	/**
+	 * Global object used to initialize and access the XBMC API
+	 * 
+	 * @param hostname
+	 *            used to specify the hostname of the XBMC JSON-RPC, optional
+	 * @param port
+	 *            used to specify the port of the XBMC JSON-RPC, optional
+	 */
+	var XBMC = function(hostname, port) {
+		var h = hostname || window.location.hostname
+		// TODO: I need to some how figure this port
+		var p = port || 9090
+
+		rpc = new $.JsonRpcClient({
+			ajaxUrl : '/jsonrpc',
+			socketUrl : 'ws://' + h + ':' + p + '/'
+		})
+
+		// To ensure the connection stays open, we ping it every 500ms
+		window.setInterval(function() {
+			rpc.call('JSONRPC.Ping', [], successHandler, errorHandler)
+		}, 500)
 	}
 
 	/**
@@ -118,7 +128,7 @@
 			var error = errorCB || errorHandler
 			rpc.call('VideoLibrary.GetEpisodes', params, success, error)
 		},
-		GetGenres : function(type, properties, limits, sort) {
+		GetGenres : function(type, properties, limits, sort, successCB, errorCB) {
 			if (type == undefined) {
 				throw "Type is not provided"
 			}
@@ -773,14 +783,436 @@
 				originalTitle, sortTitle, episodeGuide, thumbnail, fanart, tag, art, successCB, errorCB)
 	}
 
-	// TODO: add it
+	/**
+	 * A JS library wrapper for AudioLibrary API
+	 * 
+	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#AudioLibrary
+	 */
+	// TODO: needs testing
 	var AudioLibrary = function() {
 		if (rpc == undefined || rpc == null) {
 			throw "XBMC API not initialized! Call `new XBMC(hostname, port)`!"
 		}
 	}
 
-	AudioLibrary.prototype = {}
+	// AudioLibrary API core methods
+	AudioLibrary.prototype = {
+		Clean : function(successCB, errorCB) {
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.Clean', [], success, error)
+		},
+		Export : function(options, successCB, errorCB) {
+			var params = []
+			if (option != undefined) {
+				params.push(options)
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.Export', params, success, error)
+		},
+		GetAlbumDetails : function(albumId, properties, successCB, errorCB) {
+			if (albumId == undefined) {
+				throw "Album ID is not provided"
+			}
+			var params = [ albumId ]
+			if (properties != undefined) {
+				params.push(properties)
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.GetAlbumDetails', params, success, error)
+		},
+		GetAlbums : function(properties, limits, sort, filter, successCB, errorCB) {
+			var params = []
+			if (properties != undefined) {
+				params.push(properties)
+				if (limits != undefined) {
+					params.push(limits)
+					if (sort != undefined) {
+						params.push(sort)
+						if (filter != undefined) {
+							params.push(filter)
+						}
+					}
+				}
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.GetAlbums', params, success, error)
+		},
+		GetArtistDetails : function(artiestID, properties, successCB, errorCB) {
+			if (artiestID == undefined) {
+				throw "Artist ID is not provided"
+			}
+			var params = [ artiestID ]
+			if (properties != undefined) {
+				params.push(properties)
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.GetArtistDetails', params, success, error)
+		},
+		GetArtist : function(albumArtistsOnly, properties, limits, sort, filter, successCB, errorCB) {
+			if (type == undefined) {
+				throw "Type is not provided"
+			}
+			var params = [ type ]
+			if (albumArtistsOnly != undefined) {
+				params.push(albumArtistsOnly)
+				if (properties != undefined) {
+					params.push(properties)
+					if (limits != undefined) {
+						params.push(limits)
+						if (sort != undefined) {
+							params.push(sort)
+							if (filter != undefined) {
+								params.push(filter)
+							}
+						}
+					}
+				}
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.GetArtist', params, success, error)
+		},
+		GetGenres : function(properties, limits, sort, successCB, errorCB) {
+			var params = []
+			if (properties != undefined) {
+				params.push(properties)
+				if (limits != undefined) {
+					params.push(limits)
+					if (sort != undefined) {
+						params.push(sort)
+					}
+				}
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.GetGenres', params, success, error)
+		},
+		GetRecentlyAddedAlbums : function(properties, limits, sort, successCB, errorCB) {
+			var params = []
+			if (properties != undefined) {
+				params.push(properties)
+				if (limits != undefined) {
+					params.push(limits)
+					if (sort != undefined) {
+						params.push(sort)
+					}
+				}
+			}
+			var success = successCB || successHandler
+			rpc.call('AudioLibrary.GetRecentlyAddedAlbums', params, success, error)
+		},
+		GetRecentlyAddedSongs : function(albumLimit, properties, limits, sort, successCB, errorCB) {
+			var params = []
+			if (albumLimit != undefined) {
+				params.push(albumLimit)
+				if (properties != undefined) {
+					params.push(properties)
+					if (limits != undefined) {
+						params.push(limits)
+						if (sort != undefined) {
+							params.push(sort)
+						}
+					}
+				}
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.GetRecentlyAddedSongs', params, success, error)
+		},
+		GetRecentlyPlayedAlbums : function(properties, limits, sort, successCB, errorCB) {
+			var params = []
+			if (properties != undefined) {
+				params.push(properties)
+				if (limits != undefined) {
+					params.push(limits)
+					if (sort != undefined) {
+						params.push(sort)
+					}
+				}
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.GetRecentlyPlayedAlbums', params, success, error)
+		},
+		GetRecentlyPlayedSongs : function(properties, limits, sort, successCB, errorCB) {
+			var params = []
+			if (properties != undefined) {
+				params.push(properties)
+				if (limits != undefined) {
+					params.push(limits)
+					if (sort != undefined) {
+						params.push(sort)
+					}
+				}
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.GetRecentlyPlayedSongs', params, success, error)
+		},
+		GetSongDetails : function(songId, properties, successCB, errorCB) {
+			if (songId == undefined) {
+				throw "Song ID is not provided"
+			}
+			var params = [ songId ]
+			if (properties != undefined) {
+				params.push(properties)
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.GetSongDetails', params, success, error)
+		},
+		GetSongs : function(properties, limits, sort, filter, successCB, errorCB) {
+			var params = []
+			if (properties != undefined) {
+				params.push(properties)
+				if (limits != undefined) {
+					params.push(limits)
+					if (sort != undefined) {
+						params.push(sort)
+						if (filter != undefined) {
+							params.push(filter)
+						}
+					}
+				}
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.GetSongs', params, success, error)
+		},
+		Scan : function(directory, successCB, errorCB) {
+			var params = []
+			if (directory != undefined) {
+				params.push(directory)
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.Scan', params, success, error)
+		},
+		SetAlbumDetails : function(albumId, title, artist, description, genre, theme, mood, style, type, albumLabel, rating, year, successCB, errorCB) {
+			if (albumId == undefined) {
+				throw "Album ID is not provided"
+			}
+			var params = [ albumId ]
+			if (title != undefined) {
+				params.push(title)
+				if (artist != undefined) {
+					params.push(artist)
+					if (description != undefined) {
+						params.push(description)
+						if (genre != undefined) {
+							params.push(genre)
+							if (theme != undefined) {
+								params.push(theme)
+								if (mood != undefined) {
+									params.push(mood)
+									if (style != undefined) {
+										params.push(style)
+										if (type != undefined) {
+											params.push(type)
+											if (albumLabel != undefined) {
+												params.push(albumLabel)
+												if (rating != undefined) {
+													params.push(rating)
+													if (year != undefined) {
+														params.push(year)
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.SetAlbumDetails', params, success, error)
+		},
+		SetArtistDetails : function(artistId, artist, instrument, style, mood, born, formed, description, genre, died, disbanded, yearsActive,
+				successCB, errorCB) {
+			if (artistId == undefined) {
+				throw "Artist ID is not provided"
+			}
+			var params = [ artistId ]
+			if (artist != undefined) {
+				params.push(artist)
+				if (instrument != undefined) {
+					params.push(instrument)
+					if (style != undefined) {
+						params.push(style)
+						if (mood != undefined) {
+							params.push(mood)
+							if (born != undefined) {
+								params.push(born)
+								if (formed != undefined) {
+									params.push(formed)
+									if (description != undefined) {
+										params.push(description)
+										if (genre != undefined) {
+											params.push(genre)
+											if (died != undefined) {
+												params.push(died)
+												if (disbanded != undefined) {
+													params.push(disbanded)
+													if (yearsActive != undefined) {
+														params.push(yearsActive)
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.SetArtistDetails', params, success, error)
+		},
+		SetSongDetails : function(songId, title, artist, albumArtist, genre, year, rating, album, track, disc, duration, comment, musicBrainzTrackId,
+				musicBrainzArtistId, musicBrainzAlbumId, musicBrainzAlbumArtistId, successCB, errorCB) {
+			if (songId == undefined) {
+				throw "Song ID is not provided"
+			}
+			var params = [ songId ]
+			if (title != undefined) {
+				params.push(title)
+				if (artist != undefined) {
+					params.push(artist)
+					if (albumArtist != undefined) {
+						params.push(albumArtist)
+						if (genre != undefined) {
+							params.push(genre)
+							if (year != undefined) {
+								params.push(year)
+								if (rating != undefined) {
+									params.push(rating)
+									if (album != undefined) {
+										params.push(album)
+										if (track != undefined) {
+											params.push(track)
+											if (disc != undefined) {
+												params.push(disc)
+												if (duration != undefined) {
+													params.push(duration)
+													if (comment != undefined) {
+														params.push(comment)
+														if (musicBrainzTrackId != undefined) {
+															params.push(musicBrainzTrackId)
+															if (musicBrainzArtistId != undefined) {
+																params.push(musicBrainzArtistId)
+																if (musicBrainzAlbumId != undefined) {
+																	params.push(musicBrainzAlbumId)
+																	if (musicBrainzAlbumArtistId != undefined) {
+																		params.push(musicBrainzAlbumArtistId)
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.SetSongDetails', params, success, error)
+		}
+	}
+
+	// AudioLibrary API convenience methods
+	AudioLibrary.prototype.clean = AudioLibrary.prototype.Clean
+	AudioLibrary.prototype.getAlbumDetails = AudioLibrary.prototype.GetAlbumDetails
+	AudioLibrary.prototype.getAlbums = AudioLibrary.prototype.GetAlbums
+	AudioLibrary.prototype.getArtistDetails = AudioLibrary.prototype.GetArtistDetails
+	AudioLibrary.prototype.getArtist = AudioLibrary.prototype.GetArtist
+	AudioLibrary.prototype.getGenres = AudioLibrary.prototype.GetGenres
+	AudioLibrary.prototype.getRecentlyAddedAlbums = AudioLibrary.prototype.GetRecentlyAddedAlbums
+	AudioLibrary.prototype.getRecentlyAddedSongs = AudioLibrary.prototype.GetRecentlyAddedSongs
+	AudioLibrary.prototype.getRecentlyPlayedAlbums = AudioLibrary.prototype.GetRecentlyPlayedAlbums
+	AudioLibrary.prototype.getRecentlyPlayedSongs = AudioLibrary.prototype.GetRecentlyPlayedSongs
+	AudioLibrary.prototype.getSongDetails = AudioLibrary.prototype.GetSongDetails
+	AudioLibrary.prototype.getSongs = AudioLibrary.prototype.GetSongs
+	AudioLibrary.prototype.scan = AudioLibrary.prototype.Scan
+	AudioLibrary.prototype.setAlbumDetails = AudioLibrary.prototype.SetAlbumDetails
+	AudioLibrary.prototype.setArtistDetails = AudioLibrary.prototype.SetArtistDetails
+	AudioLibrary.prototype.setSongDetails = AudioLibrary.prototype.SetSongDetails
+	AudioLibrary.prototype.setAlbumDetailsByObject = function(albumDetails, successCB, errorCB) {
+		var albumId = albumDetails.albumid
+		if (albumId == undefined) {
+			throw "Album ID is not provided"
+		}
+		var title = albumDetails.title
+		var artist = albumDetails.artist
+		var description = albumDetails.description
+		var genre = albumDetails.genre
+		var theme = albumDetails.theme
+		var mood = albumDetails.mood
+		var style = albumDetails.style
+		var type = albumDetails.type
+		var albumLabel = albumDetails.albumlabel
+		var rating = albumDetails.rating
+		var year = albumDetails.year
+		AudioLibrary.prototype.SetAlbumDetails(albumId, title, artist, description, genre, theme, mood, style, type, albumLabel, rating, year,
+				successCB, errorCB)
+	}
+	AudioLibrary.prototype.setArtistDetailsByObject = function(artistDetails, successCB, errorCB) {
+		var artistId = artistDetails.artistid
+		if (artistId == undefined) {
+			throw "Artist ID is not provided"
+		}
+		var artist = artistDetails.artist
+		var instrument = artistDetails.instrument
+		var style = artistDetails.style
+		var mood = artistDetails.mood
+		var born = artistDetails.born
+		var formed = artistDetails.formed
+		var description = artistDetails.description
+		var genre = artistDetails.genre
+		var died = artistDetails.died
+		var disbanded = artistDetails.disbanded
+		var yearsActive = artistDetails.yearsactive
+		AudioLibrary.prototype.SetArtistDetails(artistId, artist, instrument, style, mood, born, formed, description, genre, died, disbanded,
+				yearsActive, successCB, errorCB)
+	}
+	AudioLibrary.prototype.setSongDetailsByObject = function(songDetails, successCB, errorCB) {
+		var songId = songDetails.songid
+		if (songId == undefined) {
+			throw "Song ID is not provided"
+		}
+		var title = songDetails.title
+		var artist = songDetails.artist
+		var albumArtist = songDetails.albumartist
+		var genre = songDetails.genre
+		var year = songDetails.year
+		var rating = songDetails.rating
+		var album = songDetails.album
+		var track = songDetails.track
+		var disc = songDetails.disc
+		var duration = songDetails.duration
+		var comment = songDetails.comment
+		var musicBrainzTrackId = songDetails.musicbrainztrackid
+		var musicBrainzArtistId = songDetails.musicbrainzartistid
+		var musicBrainzAlbumId = songDetails.musicbrainzalbumid
+		var musicBrainzAlbumArtistId = songDetails.musicbrainzalbumartistid
+		AudioLibrary.prototype.SetSongDetails(songId, title, artist, albumArtist, genre, year, rating, album, track, disc, duration, comment,
+				musicBrainzTrackId, musicBrainzArtistId, musicBrainzAlbumId, musicBrainzAlbumArtistId, successCB, errorCB)
+	}
 
 	/**
 	 * A JS library wrapper for Files API
