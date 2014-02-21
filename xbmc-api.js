@@ -229,6 +229,7 @@
 				}
 			}
 			var success = successCB || successHandler
+			var error = errorCB || errorHandler
 			rpc.call('VideoLibrary.GetMovieSets', params, success, error)
 		},
 		GetMovies : function(properties, limits, sort, filter, successCB, errorCB) {
