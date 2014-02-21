@@ -698,7 +698,7 @@
 	VideoLibrary.prototype.getGenres = VideoLibrary.prototype.GetGenres
 	VideoLibrary.prototype.getMovieDetails = VideoLibrary.prototype.GetMovieDetails
 	VideoLibrary.prototype.getMovieSetDetails = VideoLibrary.prototype.GetMovieSetDetails
-	VideoLibrary.prototype.getMovieSet = VideoLibrary.prototype.GetMovieSets
+	VideoLibrary.prototype.getMovieSets = VideoLibrary.prototype.GetMovieSets
 	VideoLibrary.prototype.getMovies = VideoLibrary.prototype.GetMovies
 	VideoLibrary.prototype.getMusicVideoDetails = VideoLibrary.prototype.GetMusicVideoDetails
 	VideoLibrary.prototype.getMusicVideos = VideoLibrary.prototype.GetMusicVideos
