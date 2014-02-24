@@ -3,7 +3,7 @@
  * 
  * This wrapper was written by Tamer Saadeh <tamer@tamersaadeh.com>, 2014
  * 
- * Version: 0.2.0
+ * Version: 0.2.1
  * 
  * This file is licensed under 4-clause BSD, see LICENSE file for more details
  */
@@ -36,7 +36,7 @@
 	 */
 	var successHandler = function(e) {
 		// define (or otherwise) console.log
-		console = (console == undefined) ? {
+		var console = (console == undefined) ? {
 			log : function(str) {
 				alert(str)
 			}
@@ -109,7 +109,7 @@
 
 		// if debug we print on success, otherwise we just eat it up
 		if (!debug) {
-			successHandler = function(e) {
+			successHandler = function() {
 			}
 		}
 
@@ -348,10 +348,10 @@
 			rpc.call('VideoLibrary.GetTVShows', params, success, error)
 		},
 		RemoveEpisode : function(episodeId, successCB, errorCB) {
-			if (tvShowId == undefined)
+			if (episodeId == undefined)
 				throw ERR_EPISODE_ID
 			var params = {
-				tvshowid : tvShowId
+				episodeid : episodeId
 			}
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -760,6 +760,7 @@
 			if (sort != undefined)
 				params.sort = sort
 			var success = successCB || successHandler
+			var error = errorCB || errorHandler
 			rpc.call('AudioLibrary.GetRecentlyAddedAlbums', params, success, error)
 		},
 		GetRecentlyAddedSongs : function(albumLimit, properties, limits, sort, successCB, errorCB) {
@@ -1013,7 +1014,7 @@
 			if (direcotry == undefined)
 				throw ERR_DIRECTORY
 			var params = {
-				direcotry : direcotry
+				directory : directory
 			}
 			if (files != undefined)
 				params.files = files
