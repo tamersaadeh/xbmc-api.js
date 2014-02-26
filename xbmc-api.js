@@ -83,7 +83,7 @@
 	 */
 	var successHandler = function(e) {
 		// define (or otherwise) console.log
-		var console = (isUndefined(console )) ? {
+		var console = (isUndefined(console)) ? {
 			log : function(str) {
 				alert(str)
 			}
@@ -131,7 +131,7 @@
 
 		// To ensure the connection stays open, we ping it
 		window.setInterval(function() {
-			rpc.call('JSONRPC.Ping', [], successHandler, errorHandler)
+			rpc.call('JSONRPC.Ping', {}, successHandler, errorHandler)
 		}, speed)
 	}
 
@@ -142,7 +142,7 @@
 	 */
 	// TODO: needs more testing
 	var VideoLibrary = function() {
-		if (isUndefined(rpc ) || rpc == null)
+		if (isUndefined(rpc) || rpc == null)
 			throw ERR_NOT_INITIALIZED
 	}
 
@@ -155,19 +155,19 @@
 		},
 		Export : function(options, successCB, errorCB) {
 			var params = {}
-			if (notUndefined(options ))
+			if (notUndefined(options))
 				params.options = options
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
 			rpc.call('VideoLibrary.Export', params, success, error)
 		},
 		GetEpisodeDetails : function(episodeId, properties, successCB, errorCB) {
-			if (isUndefined(episodeId ))
+			if (isUndefined(episodeId))
 				throw ERR_EPISODE_ID
 			var params = {
 				episodeid : episodeId
 			}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -175,59 +175,59 @@
 		},
 		GetEpisodes : function(tvShowId, season, properties, limits, sort, filter, successCB, errorCB) {
 			var params = {}
-			if (notUndefined(tvShowId ))
+			if (notUndefined(tvShowId))
 				params.tvshowid = tvShowId
-			if (notUndefined(season ))
+			if (notUndefined(season))
 				params.season = season
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
-			if (notUndefined(limits ))
+			if (notUndefined(limits))
 				params.limits = limits
-			if (notUndefined(sort ))
+			if (notUndefined(sort))
 				params.sort = sort
-			if (notUndefined(filter ))
+			if (notUndefined(filter))
 				params.filter = filter
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
 			rpc.call('VideoLibrary.GetEpisodes', params, success, error)
 		},
 		GetGenres : function(type, properties, limits, sort, successCB, errorCB) {
-			if (isUndefined(type ))
+			if (isUndefined(type))
 				throw ERR_TYPE
 			var params = {
 				type : type
 			}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
-			if (notUndefined(limits ))
+			if (notUndefined(limits))
 				params.limits = limits
-			if (notUndefined(sort ))
+			if (notUndefined(sort))
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
 			rpc.call('VideoLibrary.GetGenres', params, success, error)
 		},
 		GetMovieDetails : function(movieId, properties, successCB, errorCB) {
-			if (isUndefined(movieId ))
+			if (isUndefined(movieId))
 				throw ERR_MOVIE_ID
 			var params = {
 				movieid : movieId
 			}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
 			rpc.call('VideoLibrary.GetMovieDetails', params, success, error)
 		},
 		GetMovieSetDetails : function(setId, properties, movies, successCB, errorCB) {
-			if (isUndefined(setId ))
+			if (isUndefined(setId))
 				throw ERR_SET_ID
 			var params = {
 				setid : setId
 			}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
-			if (notUndefined(movies ))
+			if (notUndefined(movies))
 				params.movies = movies
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -235,11 +235,11 @@
 		},
 		GetMovieSets : function(properties, limits, sort, successCB, errorCB) {
 			var params = {}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
-			if (notUndefined(limits ))
+			if (notUndefined(limits))
 				params.limits = limits
-			if (notUndefined(sort ))
+			if (notUndefined(sort))
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -247,25 +247,25 @@
 		},
 		GetMovies : function(properties, limits, sort, filter, successCB, errorCB) {
 			var params = {}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
-			if (notUndefined(limits ))
+			if (notUndefined(limits))
 				params.limits = limits
-			if (notUndefined(sort ))
+			if (notUndefined(sort))
 				params.sort = sort
-			if (notUndefined(filter ))
+			if (notUndefined(filter))
 				params.filter = filter
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
 			rpc.call('VideoLibrary.GetMovies', params, success, error)
 		},
 		GetMusicVideoDetails : function(musicVideoId, properties, successCB, errorCB) {
-			if (isUndefined(musicVideoId ))
+			if (isUndefined(musicVideoId))
 				throw ERR_MUSIC_VIDEO_ID
 			var params = {
 				musicvideoid : musicVideoId
 			}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -273,13 +273,13 @@
 		},
 		GetMusicVideos : function(properties, limits, sort, filter, successCB, errorCB) {
 			var params = {}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
-			if (notUndefined(limits ))
+			if (notUndefined(limits))
 				params.limits = limits
-			if (notUndefined(sort ))
+			if (notUndefined(sort))
 				params.sort = sort
-			if (notUndefined(filter ))
+			if (notUndefined(filter))
 				params.filter = filter
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -287,11 +287,11 @@
 		},
 		GetRecentlyAddedEpisodes : function(properties, limits, sort, successCB, errorCB) {
 			var params = {}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
-			if (notUndefined(limits ))
+			if (notUndefined(limits))
 				params.limits = limits
-			if (notUndefined(sort ))
+			if (notUndefined(sort))
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -299,11 +299,11 @@
 		},
 		GetRecentlyAddedMovies : function(properties, limits, sort, successCB, errorCB) {
 			var params = {}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
-			if (notUndefined(limits ))
+			if (notUndefined(limits))
 				params.limits = limits
-			if (notUndefined(sort ))
+			if (notUndefined(sort))
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -311,39 +311,39 @@
 		},
 		GetRecentlyAddedMusicVideos : function(properties, limits, sort, successCB, errorCB) {
 			var params = {}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
-			if (notUndefined(limits ))
+			if (notUndefined(limits))
 				params.limits = limits
-			if (notUndefined(sort ))
+			if (notUndefined(sort))
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
 			rpc.call('VideoLibrary.GetRecentlyAddedMusicVideos', params, success, error)
 		},
 		GetSeasons : function(tvShowId, properties, limits, sort, successCB, errorCB) {
-			if (isUndefined(tvShowId ))
+			if (isUndefined(tvShowId))
 				throw ERR_TV_SHOW_ID
 			var params = {
 				tvshowid : tvShowId
 			}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
-			if (notUndefined(limits ))
+			if (notUndefined(limits))
 				params.limits = limits
-			if (notUndefined(sort ))
+			if (notUndefined(sort))
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
 			rpc.call('VideoLibrary.GetSeasons', params, success, error)
 		},
 		GetTVShowDetails : function(tvShowId, properties, successCB, errorCB) {
-			if (isUndefined(tvShowId ))
+			if (isUndefined(tvShowId))
 				throw ERR_TV_SHOW_ID
 			var params = {
 				episodeid : episodeId
 			}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -351,20 +351,20 @@
 		},
 		GetTVShows : function(properties, limits, sort, filter, successCB, errorCB) {
 			var params = {}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
-			if (notUndefined(limits ))
+			if (notUndefined(limits))
 				params.limits = limits
-			if (notUndefined(sort ))
+			if (notUndefined(sort))
 				params.sort = sort
-			if (notUndefined(filter ))
+			if (notUndefined(filter))
 				params.filter = filter
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
 			rpc.call('VideoLibrary.GetTVShows', params, success, error)
 		},
 		RemoveEpisode : function(episodeId, successCB, errorCB) {
-			if (isUndefined(episodeId ))
+			if (isUndefined(episodeId))
 				throw ERR_EPISODE_ID
 			var params = {
 				episodeid : episodeId
@@ -374,7 +374,7 @@
 			rpc.call('VideoLibrary.RemoveEpisode', params, success, error)
 		},
 		RemoveMovie : function(movieId, successCB, errorCB) {
-			if (isUndefined(movieId ))
+			if (isUndefined(movieId))
 				throw ERR_MOVIE_ID
 			var params = {
 				movieid : movieId
@@ -384,7 +384,7 @@
 			rpc.call('VideoLibrary.RemoveMovie', params, success, error)
 		},
 		RemoveMusicVideo : function(musicVideoId, successCB, errorCB) {
-			if (isUndefined(musicVideoId ))
+			if (isUndefined(musicVideoId))
 				throw ERR_MUSIC_VIDEO_ID
 			var params = {
 				musicvideoid : musicVideoId
@@ -394,7 +394,7 @@
 			rpc.call('VideoLibrary.RemoveMusicVideo', params, success, error)
 		},
 		RemoveTVShow : function(tvShowId, successCB, errorCB) {
-			if (isUndefined(tvShowId ))
+			if (isUndefined(tvShowId))
 				throw ERR_TV_SHOW_ID
 			var params = {
 				tvshowid : tvShowId
@@ -405,7 +405,7 @@
 		},
 		Scan : function(directory, successCB, errorCB) {
 			var params = {}
-			if (notUndefined(directory ))
+			if (notUndefined(directory))
 				params.directory = directory
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -413,44 +413,44 @@
 		},
 		SetEpisodeDetails : function(episodeId, title, playCount, runTime, director, plot, rating, votes, lastPlayed, writer, firstAired,
 				productionCode, season, episode, originalTitle, thumbnail, fanart, art, successCB, errorCB) {
-			if (isUndefined(episodeId ))
+			if (isUndefined(episodeId))
 				throw ERR_EPISODE_ID
 			var params = {
 				episodeid : episodeId
 			}
-			if (notUndefined(title ))
+			if (notUndefined(title))
 				params.title = title
-			if (notUndefined(playCount ))
+			if (notUndefined(playCount))
 				params.playcount = playCount
-			if (notUndefined(runTime ))
+			if (notUndefined(runTime))
 				params.runtime = runTime
-			if (notUndefined(director ))
+			if (notUndefined(director))
 				params.director = director
-			if (notUndefined(plot ))
+			if (notUndefined(plot))
 				params.plot = plot
-			if (notUndefined(rating ))
+			if (notUndefined(rating))
 				params.rating = rating
-			if (notUndefined(votes ))
+			if (notUndefined(votes))
 				params.votes = votes
-			if (notUndefined(lastPlayed ))
+			if (notUndefined(lastPlayed))
 				params.lastplayed = lastPlayed
-			if (notUndefined(writer ))
+			if (notUndefined(writer))
 				params.writer = writer
-			if (notUndefined(firstAired ))
+			if (notUndefined(firstAired))
 				params.firstaired = (firstAired)
-			if (notUndefined(productionCode ))
+			if (notUndefined(productionCode))
 				params.productioncode = productionCode
-			if (notUndefined(season ))
+			if (notUndefined(season))
 				params.season = season
-			if (notUndefined(episode ))
+			if (notUndefined(episode))
 				params.episode = episode
-			if (notUndefined(originalTitle ))
+			if (notUndefined(originalTitle))
 				params.originalTitle = originalTitle
-			if (notUndefined(thumbnail ))
+			if (notUndefined(thumbnail))
 				params.thumbnail = thumbnail
-			if (notUndefined(fanart ))
+			if (notUndefined(fanart))
 				params.fanart = fanart
-			if (notUndefined(art ))
+			if (notUndefined(art))
 				params.art = art
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -459,64 +459,64 @@
 		SetMovieDetails : function(movieId, title, playCount, runTime, director, studio, year, plot, genre, rating, mpaa, imdbNumber, votes,
 				lastPlayed, originalTitle, trailer, tagLine, plotOutline, writer, country, top250, sortTitle, set, showLink, thumbnail, fanart, tag,
 				art, successCB, errorCB) {
-			if (isUndefined(movieId ))
+			if (isUndefined(movieId))
 				throw ERR_MOVIE_ID
 			var params = {
 				movieid : movieId
 			}
-			if (notUndefined(title ))
+			if (notUndefined(title))
 				params.title = title
-			if (notUndefined(playCount ))
+			if (notUndefined(playCount))
 				params.playcount = playCount
-			if (notUndefined(runTime ))
+			if (notUndefined(runTime))
 				params.runtime = runTime
-			if (notUndefined(director ))
+			if (notUndefined(director))
 				params.director = director
-			if (notUndefined(studio ))
+			if (notUndefined(studio))
 				params.studio = studio
-			if (notUndefined(year ))
+			if (notUndefined(year))
 				params.year = year
-			if (notUndefined(plot ))
+			if (notUndefined(plot))
 				params.plot = plot
-			if (notUndefined(genre ))
+			if (notUndefined(genre))
 				params.genre = genre
-			if (notUndefined(rating ))
+			if (notUndefined(rating))
 				params.rating = rating
-			if (notUndefined(mpaa ))
+			if (notUndefined(mpaa))
 				params.mpaa = mpaa
-			if (notUndefined(imdbNumber ))
+			if (notUndefined(imdbNumber))
 				params.imdbnumber = imdbNumber
-			if (notUndefined(votes ))
+			if (notUndefined(votes))
 				params.votes = votes
-			if (notUndefined(lastPlayed ))
+			if (notUndefined(lastPlayed))
 				params.lastplayed = lastPlayed
-			if (notUndefined(originalTitle ))
+			if (notUndefined(originalTitle))
 				params.originaltitle = originalTitle
-			if (notUndefined(trailer ))
+			if (notUndefined(trailer))
 				params.trailer = trailer
-			if (notUndefined(tagLine ))
+			if (notUndefined(tagLine))
 				params.tagline = tagLine
-			if (notUndefined(plotOutline ))
+			if (notUndefined(plotOutline))
 				params.plotoutline = plotOutline
-			if (notUndefined(writer ))
+			if (notUndefined(writer))
 				params.writer = writer
-			if (notUndefined(country ))
+			if (notUndefined(country))
 				params.country = country
-			if (notUndefined(top250 ))
+			if (notUndefined(top250))
 				params.top250 = top250
-			if (notUndefined(sortTitle ))
+			if (notUndefined(sortTitle))
 				params.sorttitle = sortTitle
-			if (notUndefined(set ))
+			if (notUndefined(set))
 				params.set = set
-			if (notUndefined(showLink ))
+			if (notUndefined(showLink))
 				params.showlink = showLink
-			if (notUndefined(thumbnail ))
+			if (notUndefined(thumbnail))
 				params.thumbnail = thumbnail
-			if (notUndefined(fanart ))
+			if (notUndefined(fanart))
 				params.fanart = fanart
-			if (notUndefined(tag ))
+			if (notUndefined(tag))
 				params.tag = tag
-			if (notUndefined(art ))
+			if (notUndefined(art))
 				params.art = art
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -524,42 +524,42 @@
 		},
 		SetMusicVideoDetails : function(musicVideoId, title, playCount, runTime, director, studio, year, plot, album, artist, genre, track,
 				lastPlayed, thumbnail, fanart, tag, art, successCB, errorCB) {
-			if (isUndefined(musicVideoId ))
+			if (isUndefined(musicVideoId))
 				throw ERR_MUSIC_VIDEO_ID
 			var params = {
 				musicvideoid : musicVideoId
 			}
-			if (notUndefined(title ))
+			if (notUndefined(title))
 				params.title = title
-			if (notUndefined(playCount ))
+			if (notUndefined(playCount))
 				params.playcount = playCount
-			if (notUndefined(runTime ))
+			if (notUndefined(runTime))
 				params.runtime = runTime
-			if (notUndefined(director ))
+			if (notUndefined(director))
 				params.director = director
-			if (notUndefined(studio ))
+			if (notUndefined(studio))
 				params.studio = studio
-			if (notUndefined(year ))
+			if (notUndefined(year))
 				params.year = year
-			if (notUndefined(plot ))
+			if (notUndefined(plot))
 				params.plot = plot
-			if (notUndefined(album ))
+			if (notUndefined(album))
 				params.album = album
-			if (notUndefined(artist ))
+			if (notUndefined(artist))
 				params.push(artist)
-			if (notUndefined(genre ))
+			if (notUndefined(genre))
 				params.genre = genre
-			if (notUndefined(track ))
+			if (notUndefined(track))
 				params.track = track
-			if (notUndefined(lastPlayed ))
+			if (notUndefined(lastPlayed))
 				params.lastplayed = lastPlayed
-			if (notUndefined(thumbnail ))
+			if (notUndefined(thumbnail))
 				params.thumbnail = thumbnail
-			if (notUndefined(fanart ))
+			if (notUndefined(fanart))
 				params.fanart = fanart
-			if (notUndefined(tag ))
+			if (notUndefined(tag))
 				params.tag = tag
-			if (notUndefined(art ))
+			if (notUndefined(art))
 				params.art = art
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -567,44 +567,44 @@
 		},
 		SetTVShowDetails : function(tvShowId, title, playCount, studio, plot, rating, mpaa, imdbNumber, premiered, votes, lastPlayed, originalTitle,
 				sortTitle, episodeGuide, thumbnail, fanart, tag, art, successCB, errorCB) {
-			if (isUndefined(tvShowId ))
+			if (isUndefined(tvShowId))
 				throw ERR_TV_SHOW_ID
 			var params = {
 				tvshowid : tvShowId
 			}
-			if (notUndefined(title ))
+			if (notUndefined(title))
 				params.title = title
-			if (notUndefined(playCount ))
+			if (notUndefined(playCount))
 				params.playcount = playCount
-			if (notUndefined(studio ))
+			if (notUndefined(studio))
 				params.studio = studio
-			if (notUndefined(plot ))
+			if (notUndefined(plot))
 				params.plot = plot
-			if (notUndefined(rating ))
+			if (notUndefined(rating))
 				params.rating = rating
-			if (notUndefined(mpaa ))
+			if (notUndefined(mpaa))
 				params.push(mpaa)
-			if (notUndefined(imdbNumber ))
+			if (notUndefined(imdbNumber))
 				params.imdbnumber = imdbNumber
-			if (notUndefined(premiered ))
+			if (notUndefined(premiered))
 				params.premiered = premiered
-			if (notUndefined(votes ))
+			if (notUndefined(votes))
 				params.votes = votes
-			if (notUndefined(lastPlayed ))
+			if (notUndefined(lastPlayed))
 				params.lastplayed = lastPlayed
-			if (notUndefined(originalTitle ))
+			if (notUndefined(originalTitle))
 				params.originaltitle = originalTitle
-			if (notUndefined(sortTitle ))
+			if (notUndefined(sortTitle))
 				params.sorttitle = sortTitle
-			if (notUndefined(episodeGuide ))
+			if (notUndefined(episodeGuide))
 				params.push(episodeGuide)
-			if (notUndefined(thumbnail ))
+			if (notUndefined(thumbnail))
 				params.thumbnail = thumbnail
-			if (notUndefined(fanart ))
+			if (notUndefined(fanart))
 				params.fanart = fanart
-			if (notUndefined(tag ))
+			if (notUndefined(tag))
 				params.tag = tag
-			if (notUndefined(art ))
+			if (notUndefined(art))
 				params.art = art
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -640,7 +640,7 @@
 	VideoLibrary.prototype.setTVShowDetails = VideoLibrary.prototype.SetTVShowDetails
 	VideoLibrary.prototype.setEpisodeDetailsByObject = function(params, successCB, errorCB) {
 		var episodeId = episodeDetails.episodeid
-		if (isUndefined(episodeId ))
+		if (isUndefined(episodeId))
 			throw ERR_EPISODE_ID
 		var success = successCB || successHandler
 		var error = errorCB || errorHandler
@@ -648,7 +648,7 @@
 	}
 	VideoLibrary.prototype.setMovieDetailsByObject = function(params, successCB, errorCB) {
 		var movieId = movieDetails.episodeid
-		if (isUndefined(movieId ))
+		if (isUndefined(movieId))
 			throw ERR_MOVIE_ID
 		var success = successCB || successHandler
 		var error = errorCB || errorHandler
@@ -656,7 +656,7 @@
 	}
 	VideoLibrary.prototype.setMusicVideoDetailsByObject = function(params, successCB, errorCB) {
 		var musicVideoId = musicVidioDetails.musicvideoid
-		if (isUndefined(musicVideoId ))
+		if (isUndefined(musicVideoId))
 			throw ERR_MUSIC_VIDEO_ID
 		var success = successCB || successHandler
 		var error = errorCB || errorHandler
@@ -664,7 +664,7 @@
 	}
 	VideoLibrary.prototype.setTVShowDetailsByObject = function(params, successCB, errorCB) {
 		var tvShowId = tvShowDetails.tvshowid
-		if (isUndefined(tvShowId ))
+		if (isUndefined(tvShowId))
 			throw ERR_TV_SHOW_ID
 		var success = successCB || successHandler
 		var error = errorCB || errorHandler
@@ -678,7 +678,7 @@
 	 */
 	// TODO: needs testing
 	var AudioLibrary = function() {
-		if (isUndefined(rpc ) || rpc == null)
+		if (isUndefined(rpc) || rpc == null)
 			throw ERR_NOT_INITIALIZED
 	}
 
@@ -691,19 +691,19 @@
 		},
 		Export : function(options, successCB, errorCB) {
 			var params = {}
-			if (notUndefined(option ))
+			if (notUndefined(option))
 				params.options = options
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
 			rpc.call('AudioLibrary.Export', params, success, error)
 		},
 		GetAlbumDetails : function(albumId, properties, successCB, errorCB) {
-			if (isUndefined(albumId ))
+			if (isUndefined(albumId))
 				throw ERR_ALBUM_ID
 			var params = {
 				albumid : albumId
 			}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -711,45 +711,45 @@
 		},
 		GetAlbums : function(properties, limits, sort, filter, successCB, errorCB) {
 			var params = {}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
-			if (notUndefined(limits ))
+			if (notUndefined(limits))
 				params.limits = limits
-			if (notUndefined(sort ))
+			if (notUndefined(sort))
 				params.sort = sort
-			if (notUndefined(filter ))
+			if (notUndefined(filter))
 				params.filter = filter
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
 			rpc.call('AudioLibrary.GetAlbums', params, success, error)
 		},
 		GetArtistDetails : function(artiestId, properties, successCB, errorCB) {
-			if (isUndefined(artiestID ))
+			if (isUndefined(artiestID))
 				throw ERR_ARTIST_ID
 			var params = {
 				artiestid : artiestId
 			}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
 			rpc.call('AudioLibrary.GetArtistDetails', params, success, error)
 		},
 		GetArtist : function(albumArtistsOnly, properties, limits, sort, filter, successCB, errorCB) {
-			if (isUndefined(type ))
+			if (isUndefined(type))
 				throw ERR_TYPE
 			var params = {
 				type : type
 			}
-			if (notUndefined(albumArtistsOnly ))
+			if (notUndefined(albumArtistsOnly))
 				params.albumartistsonly = albumArtistsOnly
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
-			if (notUndefined(limits ))
+			if (notUndefined(limits))
 				params.limits = limits
-			if (notUndefined(sort ))
+			if (notUndefined(sort))
 				params.sort = sort
-			if (notUndefined(filter ))
+			if (notUndefined(filter))
 				params.filter = filter
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -757,11 +757,11 @@
 		},
 		GetGenres : function(properties, limits, sort, successCB, errorCB) {
 			var params = {}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
-			if (notUndefined(limits ))
+			if (notUndefined(limits))
 				params.limits = limits
-			if (notUndefined(sort ))
+			if (notUndefined(sort))
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -769,11 +769,11 @@
 		},
 		GetRecentlyAddedAlbums : function(properties, limits, sort, successCB, errorCB) {
 			var params = {}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
-			if (notUndefined(limits ))
+			if (notUndefined(limits))
 				params.limits = limits
-			if (notUndefined(sort ))
+			if (notUndefined(sort))
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -781,13 +781,13 @@
 		},
 		GetRecentlyAddedSongs : function(albumLimit, properties, limits, sort, successCB, errorCB) {
 			var params = {}
-			if (notUndefined(albumLimit ))
+			if (notUndefined(albumLimit))
 				params.albumLimit = albumLimit
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
-			if (notUndefined(limits ))
+			if (notUndefined(limits))
 				params.limits = limits
-			if (notUndefined(sort ))
+			if (notUndefined(sort))
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -795,11 +795,11 @@
 		},
 		GetRecentlyPlayedAlbums : function(properties, limits, sort, successCB, errorCB) {
 			var params = {}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
-			if (notUndefined(limits ))
+			if (notUndefined(limits))
 				params.limits = limits
-			if (notUndefined(sort ))
+			if (notUndefined(sort))
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -807,23 +807,23 @@
 		},
 		GetRecentlyPlayedSongs : function(properties, limits, sort, successCB, errorCB) {
 			var params = {}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
-			if (notUndefined(limits ))
+			if (notUndefined(limits))
 				params.limits = limits
-			if (notUndefined(sort ))
+			if (notUndefined(sort))
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
 			rpc.call('AudioLibrary.GetRecentlyPlayedSongs', params, success, error)
 		},
 		GetSongDetails : function(songId, properties, successCB, errorCB) {
-			if (isUndefined(songId ))
+			if (isUndefined(songId))
 				throw ERR_SONG_ID
 			var params = {
 				songid : songId
 			}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -831,13 +831,13 @@
 		},
 		GetSongs : function(properties, limits, sort, filter, successCB, errorCB) {
 			var params = {}
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
-			if (notUndefined(limits ))
+			if (notUndefined(limits))
 				params.limits = limits
-			if (notUndefined(sort ))
+			if (notUndefined(sort))
 				params.sort = sort
-			if (notUndefined(filter ))
+			if (notUndefined(filter))
 				params.filter = filter
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -845,39 +845,39 @@
 		},
 		Scan : function(directory, successCB, errorCB) {
 			var params = {}
-			if (notUndefined(directory ))
+			if (notUndefined(directory))
 				params.directory = directory
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
 			rpc.call('AudioLibrary.Scan', params, success, error)
 		},
 		SetAlbumDetails : function(albumId, title, artist, description, genre, theme, mood, style, type, albumLabel, rating, year, successCB, errorCB) {
-			if (isUndefined(albumId ))
+			if (isUndefined(albumId))
 				throw ERR_ALBUM_ID
 			var params = {
 				albumid : albumId
 			}
-			if (notUndefined(title ))
+			if (notUndefined(title))
 				params.title = title
-			if (notUndefined(artist ))
+			if (notUndefined(artist))
 				params.artist = artist
-			if (notUndefined(description ))
+			if (notUndefined(description))
 				params.description = description
-			if (notUndefined(genre ))
+			if (notUndefined(genre))
 				params.genre = genre
-			if (notUndefined(theme ))
+			if (notUndefined(theme))
 				params.theme = theme
-			if (notUndefined(mood ))
+			if (notUndefined(mood))
 				params.mood = mood
-			if (notUndefined(style ))
+			if (notUndefined(style))
 				params.style = style
-			if (notUndefined(type ))
+			if (notUndefined(type))
 				params.type = type
-			if (notUndefined(albumLabel ))
+			if (notUndefined(albumLabel))
 				params.albumlabel = albumLabel
-			if (notUndefined(rating ))
+			if (notUndefined(rating))
 				params.rating = rating
-			if (notUndefined(year ))
+			if (notUndefined(year))
 				params.year = year
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -885,32 +885,32 @@
 		},
 		SetArtistDetails : function(artistId, artist, instrument, style, mood, born, formed, description, genre, died, disbanded, yearsActive,
 				successCB, errorCB) {
-			if (isUndefined(artistId ))
+			if (isUndefined(artistId))
 				throw ERR_ARTIST_ID
 			var params = {
 				artistid : artistId
 			}
-			if (notUndefined(artist ))
+			if (notUndefined(artist))
 				params.artist = artist
-			if (notUndefined(instrument ))
+			if (notUndefined(instrument))
 				params.instrument = instrument
-			if (notUndefined(style ))
+			if (notUndefined(style))
 				params.style = style
-			if (notUndefined(mood ))
+			if (notUndefined(mood))
 				params.mood = mood
-			if (notUndefined(born ))
+			if (notUndefined(born))
 				params.born = born
-			if (notUndefined(formed ))
+			if (notUndefined(formed))
 				params.formed = formed
-			if (notUndefined(description ))
+			if (notUndefined(description))
 				params.description = description
-			if (notUndefined(genre ))
+			if (notUndefined(genre))
 				params.genre = genre
-			if (notUndefined(died ))
+			if (notUndefined(died))
 				params.died = died
-			if (notUndefined(disbanded ))
+			if (notUndefined(disbanded))
 				params.disbanded = disbanded
-			if (notUndefined(yearsActive ))
+			if (notUndefined(yearsActive))
 				params.yearsactive = yearsActive
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -918,40 +918,40 @@
 		},
 		SetSongDetails : function(songId, title, artist, albumArtist, genre, year, rating, album, track, disc, duration, comment, musicBrainzTrackId,
 				musicBrainzArtistId, musicBrainzAlbumId, musicBrainzAlbumArtistId, successCB, errorCB) {
-			if (isUndefined(songId ))
+			if (isUndefined(songId))
 				throw ERR_SONG_ID
 			var params = {
 				songid : songId
 			}
-			if (notUndefined(title ))
+			if (notUndefined(title))
 				params.title = title
-			if (notUndefined(artist ))
+			if (notUndefined(artist))
 				params.artist = artist
-			if (notUndefined(albumArtist ))
+			if (notUndefined(albumArtist))
 				params.albumartist = albumArtist
-			if (notUndefined(genre ))
+			if (notUndefined(genre))
 				params.genre = genre
-			if (notUndefined(year ))
+			if (notUndefined(year))
 				params.year = year
-			if (notUndefined(rating ))
+			if (notUndefined(rating))
 				params.rating = rating
-			if (notUndefined(album ))
+			if (notUndefined(album))
 				params.album = album
-			if (notUndefined(track ))
+			if (notUndefined(track))
 				params.track = track
-			if (notUndefined(disc ))
+			if (notUndefined(disc))
 				params.disc = disc
-			if (notUndefined(duration ))
+			if (notUndefined(duration))
 				params.duration = duration
-			if (notUndefined(comment ))
+			if (notUndefined(comment))
 				params.comment = comment
-			if (notUndefined(musicBrainzTrackId ))
+			if (notUndefined(musicBrainzTrackId))
 				params.musicbrainztrackid = musicBrainzTrackId
-			if (notUndefined(musicBrainzArtistId ))
+			if (notUndefined(musicBrainzArtistId))
 				params.musicbrainzartistid = musicBrainzArtistId
-			if (notUndefined(musicBrainzAlbumId ))
+			if (notUndefined(musicBrainzAlbumId))
 				params.musicbrainzalbumid = musicBrainzAlbumId
-			if (notUndefined(musicBrainzAlbumArtistId ))
+			if (notUndefined(musicBrainzAlbumArtistId))
 				params.musicbrainzalbumartistid = musicBrainzAlbumArtistId
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -978,7 +978,7 @@
 	AudioLibrary.prototype.setSongDetails = AudioLibrary.prototype.SetSongDetails
 	AudioLibrary.prototype.setAlbumDetailsByObject = function(params, successCB, errorCB) {
 		var albumId = albumDetails.albumid
-		if (isUndefined(albumId ))
+		if (isUndefined(albumId))
 			throw ERR_ALBUM_ID
 		var success = successCB || successHandler
 		var error = errorCB || errorHandler
@@ -986,7 +986,7 @@
 	}
 	AudioLibrary.prototype.setArtistDetailsByObject = function(params, successCB, errorCB) {
 		var artistId = artistDetails.artistid
-		if (isUndefined(artistId ))
+		if (isUndefined(artistId))
 			throw ERR_ARTIST_ID
 		var success = successCB || successHandler
 		var error = errorCB || errorHandler
@@ -994,7 +994,7 @@
 	}
 	AudioLibrary.prototype.setSongDetailsByObject = function(songDetails, successCB, errorCB) {
 		var songId = songDetails.songid
-		if (isUndefined(songId ))
+		if (isUndefined(songId))
 			throw ERR_SONG_ID
 		var success = successCB || successHandler
 		var error = errorCB || errorHandler
@@ -1010,14 +1010,14 @@
 	// FIXME: Both PrepareDownload and Download in this implementation are
 	// currently broken as they only work over HTTP request not WebSockets
 	var Files = function() {
-		if (isUndefined(rpc ) || rpc == null)
+		if (isUndefined(rpc) || rpc == null)
 			throw ERR_NOT_INITIALIZED
 	}
 
 	// Files API core methods
 	Files.prototype = {
 		Download : function(path, successCB, errorCB) {
-			if (isUndefined(path ))
+			if (isUndefined(path))
 				throw ERR_PATH
 			var params = {
 				path : path
@@ -1027,44 +1027,44 @@
 			rpc.call('Files.Download', params, success, error)
 		},
 		GetDirectory : function(directory, files, properties, sort, successCB, errorCB) {
-			if (isUndefined(direcotry ))
+			if (isUndefined(direcotry))
 				throw ERR_DIRECTORY
 			var params = {
 				directory : directory
 			}
-			if (notUndefined(files ))
+			if (notUndefined(files))
 				params.files = files
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
-			if (notUndefined(sort ))
+			if (notUndefined(sort))
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
 			rpc.call('Files.GetDirectory', params, success, error)
 		},
 		GetFileDetails : function(media, files, properties, successCB, errorCB) {
-			if (isUndefined(media ))
+			if (isUndefined(media))
 				throw ERR_MEDIA
 			var params = {
 				media : media
 			}
-			if (notUndefined(files ))
+			if (notUndefined(files))
 				params.files = files
-			if (notUndefined(properties ))
+			if (notUndefined(properties))
 				params.properties = properties
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
 			rpc.call('Files.GetFileDetails', params, success, error)
 		},
 		GetSources : function(media, limits, sort, successCB, errorCB) {
-			if (isUndefined(media ))
+			if (isUndefined(media))
 				throw ERR_MEDIA
 			var params = {
 				media : media
 			}
-			if (notUndefined(limits ))
+			if (notUndefined(limits))
 				params.limits = limits
-			if (notUndefined(sort ))
+			if (notUndefined(sort))
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
