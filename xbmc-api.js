@@ -23,31 +23,7 @@
 	var directAccess = false
 
 	/**
-	 * Default error handler (throws error).
-	 */
-	var errorHandler = function(e) {
-		setTimeout(function() {
-			throw new Error("XBMC API: " + JSON.stringify(e))
-		}, 0)
-	}
-
-	/**
-	 * Default success handler (uses console.log, if available, else alert).
-	 */
-	var successHandler = function(e) {
-		// define (or otherwise) console.log
-		var console = (console == undefined) ? {
-			log : function(str) {
-				alert(str)
-			}
-		} : console
-		setTimeout(function() {
-			console.log("XBMC API: " + JSON.stringify(e))
-		}, 0)
-	}
-
-	/**
-	 * Error strings:
+	 * Strings:
 	 * 
 	 * @string ERR_NOT_INITIALIZED when XBMC is not initialized
 	 * @string ERR_TYPE when the type parameter is missing
@@ -62,6 +38,7 @@
 	 * @string ERR_ALBUM_ID when the album ID parameter is missing
 	 * @string ERR_ARTIST_ID when the artist ID parameter is missing
 	 * @string ERR_SONG_ID when the song ID parameter is missing
+	 * @string DEFAULT_LOG_TAG is the default prefix tag for logging
 	 */
 	var ERR_NOT_INITIALIZED = "XBMC API not initialized! Call `new XBMC(hostname, port)`!"
 	var ERR_TYPE = "Type is not provided"
@@ -76,6 +53,31 @@
 	var ERR_ALBUM_ID = "Album ID is not provided"
 	var ERR_ARTIST_ID = "Artist ID is not provided"
 	var ERR_SONG_ID = "Song ID is not provided"
+	var DEFAULT_LOG_TAG = "XBMC API: "
+
+	/**
+	 * Default error handler (throws error).
+	 */
+	var errorHandler = function(e) {
+		setTimeout(function() {
+			throw new Error(DEFAULT_LOG_TAG + JSON.stringify(e))
+		}, 0)
+	}
+
+	/**
+	 * Default success handler (uses console.log, if available, else alert).
+	 */
+	var successHandler = function(e) {
+		// define (or otherwise) console.log
+		var console = (console == undefined) ? {
+			log : function(str) {
+				alert(str)
+			}
+		} : console
+		setTimeout(function() {
+			console.log(DEFAULT_LOG_TAG + JSON.stringify(e))
+		}, 0)
+	}
 
 	/**
 	 * Global object used to initialize and access the XBMC API
