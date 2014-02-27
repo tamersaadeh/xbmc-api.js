@@ -1109,7 +1109,7 @@
 		},
 		SetMute : function(muteToggle, files, properties, successCB, errorCB) {
 			if (typeof muteToggle === undef)
-				throw ERR_MEDIA
+				throw ERR_MUTE_TOGGLE
 			var params = {
 				mute : muteToggle
 			}
@@ -1119,7 +1119,7 @@
 		},
 		SetVolume : function(volume, successCB, errorCB) {
 			if (typeof volume === undef)
-				throw ERR_MEDIA
+				throw ERR_VOLUME
 			var params = {
 				volume : volume
 			}
@@ -1139,7 +1139,74 @@
 		VideoLibrary : VideoLibrary,
 		AudioLibrary : AudioLibrary,
 		Files : Files,
-		Application : Application
+		Application : Application,
+		XBMC:_XBMC
+	}
+
+	/**
+	 * A JS library wrapper for XBMC API
+	 * 
+	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#XBMC
+	 */
+	
+	// TODO: needs testing
+	var _XBMC = function() {
+		if (typeof rpc === undef || rpc == null)
+			throw ERR_NOT_INITIALIZED
+	}
+
+	// _XBMC API core methods
+	_XBMC.prototype = {
+			GetInfoBooleans : XBMC.prototype.GetInfoBooleans,
+		Quit : XBMC.prototype.GetInfoLabels,
+		SetMute : function(muteToggle, files, properties, successCB, errorCB) {
+			if (typeof muteToggle === undef)
+				throw ERR_MUTE_TOGGLE
+			var params = {
+				mute : muteToggle
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('_XBMC.SetMute', params, success, error)
+		},
+		SetVolume : function(volume, successCB, errorCB) {
+			if (typeof volume === undef)
+				throw ERR_VOLUME
+			var params = {
+				volume : volume
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('_XBMC.SetVolume', params, success, error)
+		}
+	}
+
+	// _XBMC API convenience methods
+	_XBMC.prototype.getProperties = _XBMC.prototype.GetProperties
+	_XBMC.prototype.quit = _XBMC.prototype.Quit
+	_XBMC.prototype.setMute = _XBMC.prototype.SetMute
+	_XBMC.prototype.setVolume = _XBMC.prototype.SetVolume
+
+	
+	XBMC.prototype.GetInfoBooleans = function(booleans, successCB, errorCB) {
+		if (typeof booleans === undef)
+			throw ERR_MEDIA
+		var params = {
+			booleans : booleans
+		}
+		var success = successCB || successHandler
+		var error = errorCB || errorHandler
+		rpc.call('XBMC.GetInfoBooleans', params, success, error)
+	}
+	XBMC.prototype.GetInfoLabels = function(labels, successCB, errorCB) {
+		if (typeof labels === undef)
+			throw ERR_MEDIA
+		var params = {
+			labels : labels
+		}
+		var success = successCB || successHandler
+		var error = errorCB || errorHandler
+		rpc.call('XBMC.GetInfoLabels', params, success, error)
 	}
 
 	// add a custom direct access to server
