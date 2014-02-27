@@ -3,11 +3,12 @@
  * 
  * This wrapper was written by Tamer Saadeh <tamer@tamersaadeh.com>, 2014
  * 
- * Version: 0.2.2
+ * Version: 0.3.0
  * 
  * This file is licensed under 4-clause BSD, see LICENSE file for more details
  */
 
+// TODO: replace the dependency on jQuery/Json/JsonRpcClient
 (function(window) {
 	"use strict"
 
@@ -1080,10 +1081,65 @@
 	Files.prototype.getSources = Files.prototype.GetSources
 	Files.prototype.prepareDownload = Files.prototype.PrepareDownload
 
+	/**
+	 * A JS library wrapper for Application API
+	 * 
+	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#Application
+	 */
+	// TODO: needs testing
+	var Application = function() {
+		if (typeof rpc === undef || rpc == null)
+			throw ERR_NOT_INITIALIZED
+	}
+
+	// Application API core methods
+	Application.prototype = {
+		GetProperties : function(propertyNames, successCB, errorCB) {
+			var params = {}
+			if (typeof propertyNames !== undef)
+				params.properties = propertyNames
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Application.GetProperties', params, success, error)
+		},
+		Quit : function(successCB, errorCB) {
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Application.Quit', {}, success, error)
+		},
+		SetMute : function(muteToggle, files, properties, successCB, errorCB) {
+			if (typeof muteToggle === undef)
+				throw ERR_MEDIA
+			var params = {
+				mute : muteToggle
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Application.SetMute', params, success, error)
+		},
+		SetVolume : function(volume, successCB, errorCB) {
+			if (typeof volume === undef)
+				throw ERR_MEDIA
+			var params = {
+				volume : volume
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Application.SetVolume', params, success, error)
+		}
+	}
+
+	// Application API convenience methods
+	Application.prototype.getProperties = Application.prototype.GetProperties
+	Application.prototype.quit = Application.prototype.Quit
+	Application.prototype.setMute = Application.prototype.SetMute
+	Application.prototype.setVolume = Application.prototype.SetVolume
+
 	XBMC.prototype = {
 		VideoLibrary : VideoLibrary,
 		AudioLibrary : AudioLibrary,
-		Files : Files
+		Files : Files,
+		Application : Application
 	}
 
 	// add a custom direct access to server
