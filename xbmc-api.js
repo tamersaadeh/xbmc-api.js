@@ -27,34 +27,33 @@
 	 * Strings:
 	 * 
 	 * @string ERR_NOT_INITIALIZED when XBMC is not initialized
-	 * @string ERR_TYPE when the type parameter is missing
-	 * @string ERR_PATH when the path parameter is missing
-	 * @string ERR_MEDIA when the media parameter is missing
-	 * @string ERR_DIRECTORY when the directory parameter is missing
-	 * @string ERR_EPISODE_ID when episode ID as a parameter is missing
-	 * @string ERR_SET_ID when the set ID parameter is missing
-	 * @string ERR_MOVIE_ID when the movie ID parameter is missing
-	 * @string ERR_MUSIC_VIDEO_ID when the music video ID parameter is missing
-	 * @string ERR_TV_SHOW_ID when the TV show ID parameter is missing
-	 * @string ERR_ALBUM_ID when the album ID parameter is missing
-	 * @string ERR_ARTIST_ID when the artist ID parameter is missing
-	 * @string ERR_SONG_ID when the song ID parameter is missing
 	 * @string DEFAULT_LOG_TAG is the default prefix tag for logging
 	 */
 	var ERR_NOT_INITIALIZED = "XBMC API not initialized! Call `new XBMC(hostname, port)`!"
-	var ERR_TYPE = "Type is not provided"
-	var ERR_PATH = "Path is not provided"
-	var ERR_MEDIA = "Media is not provided"
-	var ERR_DIRECTORY = "Directory is not provided"
-	var ERR_EPISODE_ID = "Episode ID is not provided"
-	var ERR_SET_ID = "Set ID is not provided"
-	var ERR_MOVIE_ID = "Movie ID is not provided"
-	var ERR_MUSIC_VIDEO_ID = "Music Video ID is not provided"
-	var ERR_TV_SHOW_ID = "TV Show ID is not provided"
-	var ERR_ALBUM_ID = "Album ID is not provided"
-	var ERR_ARTIST_ID = "Artist ID is not provided"
-	var ERR_SONG_ID = "Song ID is not provided"
 	var DEFAULT_LOG_TAG = "XBMC API: "
+
+	/**
+	 * Helper function, just minimizes repetitions
+	 */
+	var MISSING_ERROR = function(e) {
+		return e + " is not provided"
+	}
+	var ERR_TYPE = MISSING_ERROR("Type")
+	var ERR_PATH = MISSING_ERROR("Path")
+	var ERR_MEDIA = MISSING_ERROR("Media")
+	var ERR_DIRECTORY = MISSING_ERROR("Directory")
+	var ERR_EPISODE_ID = MISSING_ERROR("Episode ID")
+	var ERR_SET_ID = MISSING_ERROR("Set ID")
+	var ERR_MOVIE_ID = MISSING_ERROR("Movie ID")
+	var ERR_MUSIC_VIDEO_ID = MISSING_ERROR("Music Video ID")
+	var ERR_TV_SHOW_ID = MISSING_ERROR("TV Show ID")
+	var ERR_ALBUM_ID = MISSING_ERROR("Album ID")
+	var ERR_ARTIST_ID = MISSING_ERROR("Artist ID")
+	var ERR_SONG_ID = MISSING_ERROR("Song ID")
+	var ERR_VOLUME = MISSING_ERROR("Volume")
+	var ERR_MUTE_TOGGLE = MISSING_ERROR("Mute Toggle")
+	var ERR_BOOLEANS = MISSING_ERROR("Booleans array")
+	var ERR_LABELS = MISSING_ERROR("Labels array")
 
 	/**
 	 * Create an undefined variable
@@ -1107,7 +1106,7 @@
 			var error = errorCB || errorHandler
 			rpc.call('Application.Quit', {}, success, error)
 		},
-		SetMute : function(muteToggle, files, properties, successCB, errorCB) {
+		SetMute : function(muteToggle, successCB, errorCB) {
 			if (typeof muteToggle === undef)
 				throw ERR_MUTE_TOGGLE
 			var params = {
@@ -1135,62 +1134,11 @@
 	Application.prototype.setMute = Application.prototype.SetMute
 	Application.prototype.setVolume = Application.prototype.SetVolume
 
-	XBMC.prototype = {
-		VideoLibrary : VideoLibrary,
-		AudioLibrary : AudioLibrary,
-		Files : Files,
-		Application : Application,
-		XBMC:_XBMC
-	}
-
-	/**
-	 * A JS library wrapper for XBMC API
-	 * 
-	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#XBMC
-	 */
-	
-	// TODO: needs testing
-	var _XBMC = function() {
-		if (typeof rpc === undef || rpc == null)
-			throw ERR_NOT_INITIALIZED
-	}
-
-	// _XBMC API core methods
-	_XBMC.prototype = {
-			GetInfoBooleans : XBMC.prototype.GetInfoBooleans,
-		Quit : XBMC.prototype.GetInfoLabels,
-		SetMute : function(muteToggle, files, properties, successCB, errorCB) {
-			if (typeof muteToggle === undef)
-				throw ERR_MUTE_TOGGLE
-			var params = {
-				mute : muteToggle
-			}
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('_XBMC.SetMute', params, success, error)
-		},
-		SetVolume : function(volume, successCB, errorCB) {
-			if (typeof volume === undef)
-				throw ERR_VOLUME
-			var params = {
-				volume : volume
-			}
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('_XBMC.SetVolume', params, success, error)
-		}
-	}
-
-	// _XBMC API convenience methods
-	_XBMC.prototype.getProperties = _XBMC.prototype.GetProperties
-	_XBMC.prototype.quit = _XBMC.prototype.Quit
-	_XBMC.prototype.setMute = _XBMC.prototype.SetMute
-	_XBMC.prototype.setVolume = _XBMC.prototype.SetVolume
-
-	
+	// For added convenience there is no need to have new XBMC.XBMC() as this
+	// just looks ugly
 	XBMC.prototype.GetInfoBooleans = function(booleans, successCB, errorCB) {
 		if (typeof booleans === undef)
-			throw ERR_MEDIA
+			throw ERR_BOOLEANS
 		var params = {
 			booleans : booleans
 		}
@@ -1200,13 +1148,42 @@
 	}
 	XBMC.prototype.GetInfoLabels = function(labels, successCB, errorCB) {
 		if (typeof labels === undef)
-			throw ERR_MEDIA
+			throw ERR_LABELS
 		var params = {
 			labels : labels
 		}
 		var success = successCB || successHandler
 		var error = errorCB || errorHandler
 		rpc.call('XBMC.GetInfoLabels', params, success, error)
+	}
+	XBMC.prototype.getInfoBooleans = XBMC.prototype.GetInfoBooleans
+	XBMC.prototype.getInfoLabels = XBMC.prototype.GetInfoLabels
+
+	/**
+	 * A JS library wrapper for XBMC API
+	 * 
+	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#XBMC
+	 */
+	// TODO: needs testing
+	var _XBMC = function() {
+		if (typeof rpc === undef || rpc == null)
+			throw ERR_NOT_INITIALIZED
+	}
+
+	// XBMC API methods
+	_XBMC.prototype = {
+		GetInfoBooleans : XBMC.prototype.GetInfoBooleans,
+		getInfoBooleans : XBMC.prototype.GetInfoBooleans,
+		GetInfoLabels : XBMC.prototype.GetInfoLabels,
+		getInfoLabels : XBMC.prototype.GetInfoLabels
+	}
+
+	XBMC.prototype = {
+		Application : Application,
+		VideoLibrary : VideoLibrary,
+		AudioLibrary : AudioLibrary,
+		Files : Files,
+		XBMC : _XBMC
 	}
 
 	// add a custom direct access to server
