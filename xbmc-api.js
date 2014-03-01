@@ -215,6 +215,736 @@
 	}
 
 	/**
+	 * A JS library wrapper for Addons API
+	 * 
+	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#Addons
+	 */
+	// TODO: needs testing
+	var Addons = function() {
+		if (typeof rpc === undef || rpc == null)
+			throw ERR_NOT_INITIALIZED
+	}
+
+	// Addons API core methods
+	Addons.prototype = {
+		ExecuteAddon : function(addonId, parameters, wait, successCB, errorCB) {
+			if (typeof addonId === undef)
+				throw ERR_ADDON_ID
+			var params = {
+				addonid : addonId
+			}
+			if (typeof parameters !== undef)
+				params.params = parameters
+			if (typeof wait !== undef)
+				params.wait = wait
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Addons.ExecuteAddon', params, success, error)
+		},
+		GetAddonDetails : function(addonId, properties, successCB, errorCB) {
+			if (typeof addonId === undef)
+				throw ERR_ADDON_ID
+			var params = {
+				addonid : addonId
+			}
+			if (typeof properties !== undef)
+				params.properties = properties
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Addons.GetAddonDetails', params, success, error)
+		},
+		GetAddons : function(type, content, enabled, properties, limits, successCB, errorCB) {
+			var params = {}
+			if (typeof type !== undef)
+				params.type = type
+			if (typeof content !== undef)
+				params.content = content
+			if (typeof enabled !== undef)
+				params.enabled = enabled
+			if (typeof properties !== undef)
+				params.properties = properties
+			if (typeof limits !== undef)
+				params.limits = limits
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Addons.GetAddons', params, success, error)
+		},
+		SetAddonEnabled : function(addonId, enabled, successCB, errorCB) {
+			if (typeof addonId === undef)
+				throw ERR_ADDON_ID
+			if (typeof enabled === undef)
+				throw ERR_ENABLED
+			var params = {
+				addonid : addonId,
+				enabled : enabled
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Addons.SetAddonEnabled', params, success, error)
+		}
+	}
+
+	// Addons API convenience methods
+	Addons.prototype.executeAddon = Addons.prototype.ExecuteAddon
+	Addons.prototype.getAddonDetails = Addons.prototype.GetAddonDetails
+	Addons.prototype.getAddons = Addons.prototype.GetAddons
+	Addons.prototype.setAddonEnabled = Addons.prototype.SetAddonEnabled
+
+	/**
+	 * A JS library wrapper for Application API
+	 * 
+	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#Application
+	 */
+	// TODO: needs testing
+	var Application = function() {
+		if (typeof rpc === undef || rpc == null)
+			throw ERR_NOT_INITIALIZED
+	}
+
+	// Application API core methods
+	Application.prototype = {
+		GetProperties : function(propertyNames, successCB, errorCB) {
+			var params = {}
+			if (typeof propertyNames !== undef)
+				params.properties = propertyNames
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Application.GetProperties', params, success, error)
+		},
+		Quit : function(successCB, errorCB) {
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Application.Quit', {}, success, error)
+		},
+		SetMute : function(muteToggle, successCB, errorCB) {
+			if (typeof muteToggle === undef)
+				throw ERR_MUTE_TOGGLE
+			var params = {
+				mute : muteToggle
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Application.SetMute', params, success, error)
+		},
+		SetVolume : function(volume, successCB, errorCB) {
+			if (typeof volume === undef)
+				throw ERR_VOLUME
+			var params = {
+				volume : volume
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Application.SetVolume', params, success, error)
+		}
+	}
+
+	// Application API convenience methods
+	Application.prototype.getProperties = Application.prototype.GetProperties
+	Application.prototype.quit = Application.prototype.Quit
+	Application.prototype.setMute = Application.prototype.SetMute
+	Application.prototype.setVolume = Application.prototype.SetVolume
+
+	/**
+	 * A JS library wrapper for AudioLibrary API
+	 * 
+	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#AudioLibrary
+	 */
+	// TODO: needs testing
+	var AudioLibrary = function() {
+		if (typeof rpc === undef || rpc == null)
+			throw ERR_NOT_INITIALIZED
+	}
+
+	// AudioLibrary API core methods
+	AudioLibrary.prototype = {
+		Clean : function(successCB, errorCB) {
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.Clean', {}, success, error)
+		},
+		Export : function(options, successCB, errorCB) {
+			var params = {}
+			if (typeof option !== undef)
+				params.options = options
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.Export', params, success, error)
+		},
+		GetAlbumDetails : function(albumId, properties, successCB, errorCB) {
+			if (typeof albumId === undef)
+				throw ERR_ALBUM_ID
+			var params = {
+				albumid : albumId
+			}
+			if (typeof properties !== undef)
+				params.properties = properties
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.GetAlbumDetails', params, success, error)
+		},
+		GetAlbums : function(properties, limits, sort, filter, successCB, errorCB) {
+			var params = {}
+			if (typeof properties !== undef)
+				params.properties = properties
+			if (typeof limits !== undef)
+				params.limits = limits
+			if (typeof sort !== undef)
+				params.sort = sort
+			if (typeof filter !== undef)
+				params.filter = filter
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.GetAlbums', params, success, error)
+		},
+		GetArtistDetails : function(artiestId, properties, successCB, errorCB) {
+			if (typeof artiestID === undef)
+				throw ERR_ARTIST_ID
+			var params = {
+				artiestid : artiestId
+			}
+			if (typeof properties !== undef)
+				params.properties = properties
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.GetArtistDetails', params, success, error)
+		},
+		GetArtist : function(albumArtistsOnly, properties, limits, sort, filter, successCB, errorCB) {
+			if (typeof type === undef)
+				throw ERR_TYPE
+			var params = {
+				type : type
+			}
+			if (typeof albumArtistsOnly !== undef)
+				params.albumartistsonly = albumArtistsOnly
+			if (typeof properties !== undef)
+				params.properties = properties
+			if (typeof limits !== undef)
+				params.limits = limits
+			if (typeof sort !== undef)
+				params.sort = sort
+			if (typeof filter !== undef)
+				params.filter = filter
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.GetArtist', params, success, error)
+		},
+		GetGenres : function(properties, limits, sort, successCB, errorCB) {
+			var params = {}
+			if (typeof properties !== undef)
+				params.properties = properties
+			if (typeof limits !== undef)
+				params.limits = limits
+			if (typeof sort !== undef)
+				params.sort = sort
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.GetGenres', params, success, error)
+		},
+		GetRecentlyAddedAlbums : function(properties, limits, sort, successCB, errorCB) {
+			var params = {}
+			if (typeof properties !== undef)
+				params.properties = properties
+			if (typeof limits !== undef)
+				params.limits = limits
+			if (typeof sort !== undef)
+				params.sort = sort
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.GetRecentlyAddedAlbums', params, success, error)
+		},
+		GetRecentlyAddedSongs : function(albumLimit, properties, limits, sort, successCB, errorCB) {
+			var params = {}
+			if (typeof albumLimit !== undef)
+				params.albumLimit = albumLimit
+			if (typeof properties !== undef)
+				params.properties = properties
+			if (typeof limits !== undef)
+				params.limits = limits
+			if (typeof sort !== undef)
+				params.sort = sort
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.GetRecentlyAddedSongs', params, success, error)
+		},
+		GetRecentlyPlayedAlbums : function(properties, limits, sort, successCB, errorCB) {
+			var params = {}
+			if (typeof properties !== undef)
+				params.properties = properties
+			if (typeof limits !== undef)
+				params.limits = limits
+			if (typeof sort !== undef)
+				params.sort = sort
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.GetRecentlyPlayedAlbums', params, success, error)
+		},
+		GetRecentlyPlayedSongs : function(properties, limits, sort, successCB, errorCB) {
+			var params = {}
+			if (typeof properties !== undef)
+				params.properties = properties
+			if (typeof limits !== undef)
+				params.limits = limits
+			if (typeof sort !== undef)
+				params.sort = sort
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.GetRecentlyPlayedSongs', params, success, error)
+		},
+		GetSongDetails : function(songId, properties, successCB, errorCB) {
+			if (typeof songId === undef)
+				throw ERR_SONG_ID
+			var params = {
+				songid : songId
+			}
+			if (typeof properties !== undef)
+				params.properties = properties
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.GetSongDetails', params, success, error)
+		},
+		GetSongs : function(properties, limits, sort, filter, successCB, errorCB) {
+			var params = {}
+			if (typeof properties !== undef)
+				params.properties = properties
+			if (typeof limits !== undef)
+				params.limits = limits
+			if (typeof sort !== undef)
+				params.sort = sort
+			if (typeof filter !== undef)
+				params.filter = filter
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.GetSongs', params, success, error)
+		},
+		Scan : function(directory, successCB, errorCB) {
+			var params = {}
+			if (typeof directory !== undef)
+				params.directory = directory
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.Scan', params, success, error)
+		},
+		SetAlbumDetails : function(albumId, title, artist, description, genre, theme, mood, style, type, albumLabel, rating, year, successCB, errorCB) {
+			if (typeof albumId === undef)
+				throw ERR_ALBUM_ID
+			var params = {
+				albumid : albumId
+			}
+			if (typeof title !== undef)
+				params.title = title
+			if (typeof artist !== undef)
+				params.artist = artist
+			if (typeof description !== undef)
+				params.description = description
+			if (typeof genre !== undef)
+				params.genre = genre
+			if (typeof theme !== undef)
+				params.theme = theme
+			if (typeof mood !== undef)
+				params.mood = mood
+			if (typeof style !== undef)
+				params.style = style
+			if (typeof type !== undef)
+				params.type = type
+			if (typeof albumLabel !== undef)
+				params.albumlabel = albumLabel
+			if (typeof rating !== undef)
+				params.rating = rating
+			if (typeof year !== undef)
+				params.year = year
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.SetAlbumDetails', params, success, error)
+		},
+		SetArtistDetails : function(artistId, artist, instrument, style, mood, born, formed, description, genre, died, disbanded, yearsActive,
+				successCB, errorCB) {
+			if (typeof artistId === undef)
+				throw ERR_ARTIST_ID
+			var params = {
+				artistid : artistId
+			}
+			if (typeof artist !== undef)
+				params.artist = artist
+			if (typeof instrument !== undef)
+				params.instrument = instrument
+			if (typeof style !== undef)
+				params.style = style
+			if (typeof mood !== undef)
+				params.mood = mood
+			if (typeof born !== undef)
+				params.born = born
+			if (typeof formed !== undef)
+				params.formed = formed
+			if (typeof description !== undef)
+				params.description = description
+			if (typeof genre !== undef)
+				params.genre = genre
+			if (typeof died !== undef)
+				params.died = died
+			if (typeof disbanded !== undef)
+				params.disbanded = disbanded
+			if (typeof yearsActive !== undef)
+				params.yearsactive = yearsActive
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.SetArtistDetails', params, success, error)
+		},
+		SetSongDetails : function(songId, title, artist, albumArtist, genre, year, rating, album, track, disc, duration, comment, musicBrainzTrackId,
+				musicBrainzArtistId, musicBrainzAlbumId, musicBrainzAlbumArtistId, successCB, errorCB) {
+			if (typeof songId === undef)
+				throw ERR_SONG_ID
+			var params = {
+				songid : songId
+			}
+			if (typeof title !== undef)
+				params.title = title
+			if (typeof artist !== undef)
+				params.artist = artist
+			if (typeof albumArtist !== undef)
+				params.albumartist = albumArtist
+			if (typeof genre !== undef)
+				params.genre = genre
+			if (typeof year !== undef)
+				params.year = year
+			if (typeof rating !== undef)
+				params.rating = rating
+			if (typeof album !== undef)
+				params.album = album
+			if (typeof track !== undef)
+				params.track = track
+			if (typeof disc !== undef)
+				params.disc = disc
+			if (typeof duration !== undef)
+				params.duration = duration
+			if (typeof comment !== undef)
+				params.comment = comment
+			if (typeof musicBrainzTrackId !== undef)
+				params.musicbrainztrackid = musicBrainzTrackId
+			if (typeof musicBrainzArtistId !== undef)
+				params.musicbrainzartistid = musicBrainzArtistId
+			if (typeof musicBrainzAlbumId !== undef)
+				params.musicbrainzalbumid = musicBrainzAlbumId
+			if (typeof musicBrainzAlbumArtistId !== undef)
+				params.musicbrainzalbumartistid = musicBrainzAlbumArtistId
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('AudioLibrary.SetSongDetails', params, success, error)
+		}
+	}
+
+	// AudioLibrary API convenience methods
+	AudioLibrary.prototype.clean = AudioLibrary.prototype.Clean
+	AudioLibrary.prototype.getAlbumDetails = AudioLibrary.prototype.GetAlbumDetails
+	AudioLibrary.prototype.getAlbums = AudioLibrary.prototype.GetAlbums
+	AudioLibrary.prototype.getArtistDetails = AudioLibrary.prototype.GetArtistDetails
+	AudioLibrary.prototype.getArtist = AudioLibrary.prototype.GetArtist
+	AudioLibrary.prototype.getGenres = AudioLibrary.prototype.GetGenres
+	AudioLibrary.prototype.getRecentlyAddedAlbums = AudioLibrary.prototype.GetRecentlyAddedAlbums
+	AudioLibrary.prototype.getRecentlyAddedSongs = AudioLibrary.prototype.GetRecentlyAddedSongs
+	AudioLibrary.prototype.getRecentlyPlayedAlbums = AudioLibrary.prototype.GetRecentlyPlayedAlbums
+	AudioLibrary.prototype.getRecentlyPlayedSongs = AudioLibrary.prototype.GetRecentlyPlayedSongs
+	AudioLibrary.prototype.getSongDetails = AudioLibrary.prototype.GetSongDetails
+	AudioLibrary.prototype.getSongs = AudioLibrary.prototype.GetSongs
+	AudioLibrary.prototype.scan = AudioLibrary.prototype.Scan
+	AudioLibrary.prototype.setAlbumDetails = AudioLibrary.prototype.SetAlbumDetails
+	AudioLibrary.prototype.setArtistDetails = AudioLibrary.prototype.SetArtistDetails
+	AudioLibrary.prototype.setSongDetails = AudioLibrary.prototype.SetSongDetails
+	AudioLibrary.prototype.setAlbumDetailsByObject = function(params, successCB, errorCB) {
+		var albumId = albumDetails.albumid
+		if (typeof albumId === undef)
+			throw ERR_ALBUM_ID
+		var success = successCB || successHandler
+		var error = errorCB || errorHandler
+		rpc.call('AudioLibrary.SetAlbumDetails', params, success, error)
+	}
+	AudioLibrary.prototype.setArtistDetailsByObject = function(params, successCB, errorCB) {
+		var artistId = artistDetails.artistid
+		if (typeof artistId === undef)
+			throw ERR_ARTIST_ID
+		var success = successCB || successHandler
+		var error = errorCB || errorHandler
+		rpc.call('AudioLibrary.SetArtistDetails', params, success, error)
+	}
+	AudioLibrary.prototype.setSongDetailsByObject = function(songDetails, successCB, errorCB) {
+		var songId = songDetails.songid
+		if (typeof songId === undef)
+			throw ERR_SONG_ID
+		var success = successCB || successHandler
+		var error = errorCB || errorHandler
+		rpc.call('AudioLibrary.SetSongDetails', params, success, error)
+	}
+
+	/**
+	 * A JS library wrapper for Files API
+	 * 
+	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#Files
+	 */
+	// TODO: needs more testing
+	// FIXME: Both PrepareDownload and Download in this implementation are
+	// currently broken as they only work over HTTP request not WebSockets
+	var Files = function() {
+		if (typeof rpc === undef || rpc == null)
+			throw ERR_NOT_INITIALIZED
+	}
+
+	// Files API core methods
+	Files.prototype = {
+		Download : function(path, successCB, errorCB) {
+			if (typeof path === undef)
+				throw ERR_PATH
+			var params = {
+				path : path
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.callAJAX('Files.Download', params, success, error)
+		},
+		GetDirectory : function(directory, files, properties, sort, successCB, errorCB) {
+			if (typeof direcotry === undef)
+				throw ERR_DIRECTORY
+			var params = {
+				directory : directory
+			}
+			if (typeof files !== undef)
+				params.files = files
+			if (typeof properties !== undef)
+				params.properties = properties
+			if (typeof sort !== undef)
+				params.sort = sort
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Files.GetDirectory', params, success, error)
+		},
+		GetFileDetails : function(media, files, properties, successCB, errorCB) {
+			if (typeof media === undef)
+				throw ERR_MEDIA
+			var params = {
+				media : media
+			}
+			if (typeof files !== undef)
+				params.files = files
+			if (typeof properties !== undef)
+				params.properties = properties
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Files.GetFileDetails', params, success, error)
+		},
+		GetSources : function(media, limits, sort, successCB, errorCB) {
+			if (typeof media === undef)
+				throw ERR_MEDIA
+			var params = {
+				media : media
+			}
+			if (typeof limits !== undef)
+				params.limits = limits
+			if (typeof sort !== undef)
+				params.sort = sort
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Files.GetSources', params, success, error)
+		},
+		PrepareDownload : function(path, successCB, errorCB) {
+			if (typeof path === undef)
+				throw ERR_PATH
+			var params = {
+				path : path
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.callAJAX('Files.PrepareDownload', params, success, error)
+		}
+	}
+
+	// Files API convenience methods
+	Files.prototype.download = Files.prototype.Download
+	Files.prototype.getDirectory = Files.prototype.GetDirectory
+	Files.prototype.getFileDetails = Files.prototype.GetFileDetails
+	Files.prototype.getSources = Files.prototype.GetSources
+	Files.prototype.prepareDownload = Files.prototype.PrepareDownload
+
+	/**
+	 * A JS library wrapper for GUI API
+	 * 
+	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#GUI
+	 */
+	// TODO: needs testing
+	var GUI = function() {
+		if (typeof rpc === undef || rpc == null)
+			throw ERR_NOT_INITIALIZED
+	}
+
+	// GUI API core methods
+	GUI.prototype = {
+		ActivateWindow : function(window, properties, successCB, errorCB) {
+			if (typeof window === undef)
+				throw ERR_WINDOW
+			var params = {
+				window : window
+			}
+			if (typeof properties !== undef)
+				params.properties = properties
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('GUI.ActivateWindow', params, success, error)
+		},
+		GetProperties : function(properties, successCB, errorCB) {
+			if (typeof properties === undef)
+				throw ERR_PROPERTIES
+			var params = {
+				properties : properties
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('GUI.GetProperties', params, success, error)
+		},
+		SetFullscreen : function(fullscreen, successCB, errorCB) {
+			if (typeof fullscreen === undef)
+				throw ERR_FULLSCREEN
+			var params = {
+				fullscreen : fullscreen
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('GUI.SetFullscreen', params, success, error)
+		},
+		ShowNotification : function(title, message, image, displayTime, successCB, errorCB) {
+			if (typeof title === undef)
+				throw ERR_TITLE
+			if (typeof message === undef)
+				throw ERR_MESSAGE
+			var params = {
+				title : title,
+				message : message
+			}
+			if (typeof image !== undef)
+				params.image = image
+			if (typeof displayTime !== undef)
+				params.displaytime = displayTime
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('GUI.ShowNotification', params, success, error)
+		}
+	}
+
+	// GUI API convenience methods
+	GUI.prototype.activateWindow = GUI.prototype.ActivateWindow
+	GUI.prototype.getProperties = GUI.prototype.GetProperties
+	GUI.prototype.setFullscreen = GUI.prototype.SetFullscreen
+	GUI.prototype.showNotification = GUI.prototype.ShowNotification
+
+	/**
+	 * A JS library wrapper for Input API
+	 * 
+	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#Input
+	 */
+	// FIXME: implement this
+	var Input = function() {
+		if (typeof rpc === undef || rpc == null)
+			throw ERR_NOT_INITIALIZED
+	}
+
+	/**
+	 * A JS library wrapper for JSONRPC API
+	 * 
+	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#JSONRPC
+	 */
+	// FIXME: implement this
+	var JSONRPC = function() {
+		if (typeof rpc === undef || rpc == null)
+			throw ERR_NOT_INITIALIZED
+	}
+
+	/**
+	 * A JS library wrapper for PVR API
+	 * 
+	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#PVR
+	 */
+	// FIXME: implement this
+	var PVR = function() {
+		if (typeof rpc === undef || rpc == null)
+			throw ERR_NOT_INITIALIZED
+	}
+
+	/**
+	 * A JS library wrapper for Player API
+	 * 
+	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#Player
+	 */
+	// FIXME: implement this
+	var Player = function() {
+		if (typeof rpc === undef || rpc == null)
+			throw ERR_NOT_INITIALIZED
+	}
+
+	/**
+	 * A JS library wrapper for Playlist API
+	 * 
+	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#Playlist
+	 */
+	// FIXME: implement this
+	var Playlist = function() {
+		if (typeof rpc === undef || rpc == null)
+			throw ERR_NOT_INITIALIZED
+	}
+
+	/**
+	 * A JS library wrapper for System API
+	 * 
+	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#System
+	 */
+	// TODO: needs testing
+	var System = function() {
+		if (typeof rpc === undef || rpc == null)
+			throw ERR_NOT_INITIALIZED
+	}
+
+	// System API core methods
+	System.prototype = {
+		EjectOpticalDrive : function(successCB, errorCB) {
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('System.EjectOpticalDrive', {}, success, error)
+		},
+		GetProperties : function(properties, successCB, errorCB) {
+			if (typeof properties === undef)
+				throw ERR_PROPERTIES
+			var params = {
+				properties : properties
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('System.GetProperties', params, success, error)
+		},
+		Hibernate : function(successCB, errorCB) {
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('System.Hibernate', {}, success, error)
+		},
+		Reboot : function(successCB, errorCB) {
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('System.Reboot', {}, success, error)
+		},
+		Shutdown : function(successCB, errorCB) {
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('System.Shutdown', {}, success, error)
+		},
+		Suspend : function(successCB, errorCB) {
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('System.Suspend', {}, success, error)
+		}
+	}
+
+	// System API convenience methods
+	System.prototype.ejectOpticalDrive = System.prototype.EjectOpticalDrive
+	System.prototype.getProperties = System.prototype.GetProperties
+	System.prototype.hibernate = Systme.prototype.Hibernate
+	System.prototype.shutdown = System.prototype.Shutdown
+	System.prototype.suspend = System.prototype.Suspend
+
+	/**
 	 * A JS library wrapper for VideoLibrary API
 	 * 
 	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#VideoLibrary
@@ -751,479 +1481,11 @@
 	}
 
 	/**
-	 * A JS library wrapper for AudioLibrary API
+	 * For added convenience there is no need to have new XBMC.XBMC() as this
+	 * just looks ugly.
 	 * 
-	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#AudioLibrary
+	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#XBMC
 	 */
-	// TODO: needs testing
-	var AudioLibrary = function() {
-		if (typeof rpc === undef || rpc == null)
-			throw ERR_NOT_INITIALIZED
-	}
-
-	// AudioLibrary API core methods
-	AudioLibrary.prototype = {
-		Clean : function(successCB, errorCB) {
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('AudioLibrary.Clean', {}, success, error)
-		},
-		Export : function(options, successCB, errorCB) {
-			var params = {}
-			if (typeof option !== undef)
-				params.options = options
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('AudioLibrary.Export', params, success, error)
-		},
-		GetAlbumDetails : function(albumId, properties, successCB, errorCB) {
-			if (typeof albumId === undef)
-				throw ERR_ALBUM_ID
-			var params = {
-				albumid : albumId
-			}
-			if (typeof properties !== undef)
-				params.properties = properties
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('AudioLibrary.GetAlbumDetails', params, success, error)
-		},
-		GetAlbums : function(properties, limits, sort, filter, successCB, errorCB) {
-			var params = {}
-			if (typeof properties !== undef)
-				params.properties = properties
-			if (typeof limits !== undef)
-				params.limits = limits
-			if (typeof sort !== undef)
-				params.sort = sort
-			if (typeof filter !== undef)
-				params.filter = filter
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('AudioLibrary.GetAlbums', params, success, error)
-		},
-		GetArtistDetails : function(artiestId, properties, successCB, errorCB) {
-			if (typeof artiestID === undef)
-				throw ERR_ARTIST_ID
-			var params = {
-				artiestid : artiestId
-			}
-			if (typeof properties !== undef)
-				params.properties = properties
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('AudioLibrary.GetArtistDetails', params, success, error)
-		},
-		GetArtist : function(albumArtistsOnly, properties, limits, sort, filter, successCB, errorCB) {
-			if (typeof type === undef)
-				throw ERR_TYPE
-			var params = {
-				type : type
-			}
-			if (typeof albumArtistsOnly !== undef)
-				params.albumartistsonly = albumArtistsOnly
-			if (typeof properties !== undef)
-				params.properties = properties
-			if (typeof limits !== undef)
-				params.limits = limits
-			if (typeof sort !== undef)
-				params.sort = sort
-			if (typeof filter !== undef)
-				params.filter = filter
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('AudioLibrary.GetArtist', params, success, error)
-		},
-		GetGenres : function(properties, limits, sort, successCB, errorCB) {
-			var params = {}
-			if (typeof properties !== undef)
-				params.properties = properties
-			if (typeof limits !== undef)
-				params.limits = limits
-			if (typeof sort !== undef)
-				params.sort = sort
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('AudioLibrary.GetGenres', params, success, error)
-		},
-		GetRecentlyAddedAlbums : function(properties, limits, sort, successCB, errorCB) {
-			var params = {}
-			if (typeof properties !== undef)
-				params.properties = properties
-			if (typeof limits !== undef)
-				params.limits = limits
-			if (typeof sort !== undef)
-				params.sort = sort
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('AudioLibrary.GetRecentlyAddedAlbums', params, success, error)
-		},
-		GetRecentlyAddedSongs : function(albumLimit, properties, limits, sort, successCB, errorCB) {
-			var params = {}
-			if (typeof albumLimit !== undef)
-				params.albumLimit = albumLimit
-			if (typeof properties !== undef)
-				params.properties = properties
-			if (typeof limits !== undef)
-				params.limits = limits
-			if (typeof sort !== undef)
-				params.sort = sort
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('AudioLibrary.GetRecentlyAddedSongs', params, success, error)
-		},
-		GetRecentlyPlayedAlbums : function(properties, limits, sort, successCB, errorCB) {
-			var params = {}
-			if (typeof properties !== undef)
-				params.properties = properties
-			if (typeof limits !== undef)
-				params.limits = limits
-			if (typeof sort !== undef)
-				params.sort = sort
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('AudioLibrary.GetRecentlyPlayedAlbums', params, success, error)
-		},
-		GetRecentlyPlayedSongs : function(properties, limits, sort, successCB, errorCB) {
-			var params = {}
-			if (typeof properties !== undef)
-				params.properties = properties
-			if (typeof limits !== undef)
-				params.limits = limits
-			if (typeof sort !== undef)
-				params.sort = sort
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('AudioLibrary.GetRecentlyPlayedSongs', params, success, error)
-		},
-		GetSongDetails : function(songId, properties, successCB, errorCB) {
-			if (typeof songId === undef)
-				throw ERR_SONG_ID
-			var params = {
-				songid : songId
-			}
-			if (typeof properties !== undef)
-				params.properties = properties
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('AudioLibrary.GetSongDetails', params, success, error)
-		},
-		GetSongs : function(properties, limits, sort, filter, successCB, errorCB) {
-			var params = {}
-			if (typeof properties !== undef)
-				params.properties = properties
-			if (typeof limits !== undef)
-				params.limits = limits
-			if (typeof sort !== undef)
-				params.sort = sort
-			if (typeof filter !== undef)
-				params.filter = filter
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('AudioLibrary.GetSongs', params, success, error)
-		},
-		Scan : function(directory, successCB, errorCB) {
-			var params = {}
-			if (typeof directory !== undef)
-				params.directory = directory
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('AudioLibrary.Scan', params, success, error)
-		},
-		SetAlbumDetails : function(albumId, title, artist, description, genre, theme, mood, style, type, albumLabel, rating, year, successCB, errorCB) {
-			if (typeof albumId === undef)
-				throw ERR_ALBUM_ID
-			var params = {
-				albumid : albumId
-			}
-			if (typeof title !== undef)
-				params.title = title
-			if (typeof artist !== undef)
-				params.artist = artist
-			if (typeof description !== undef)
-				params.description = description
-			if (typeof genre !== undef)
-				params.genre = genre
-			if (typeof theme !== undef)
-				params.theme = theme
-			if (typeof mood !== undef)
-				params.mood = mood
-			if (typeof style !== undef)
-				params.style = style
-			if (typeof type !== undef)
-				params.type = type
-			if (typeof albumLabel !== undef)
-				params.albumlabel = albumLabel
-			if (typeof rating !== undef)
-				params.rating = rating
-			if (typeof year !== undef)
-				params.year = year
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('AudioLibrary.SetAlbumDetails', params, success, error)
-		},
-		SetArtistDetails : function(artistId, artist, instrument, style, mood, born, formed, description, genre, died, disbanded, yearsActive,
-				successCB, errorCB) {
-			if (typeof artistId === undef)
-				throw ERR_ARTIST_ID
-			var params = {
-				artistid : artistId
-			}
-			if (typeof artist !== undef)
-				params.artist = artist
-			if (typeof instrument !== undef)
-				params.instrument = instrument
-			if (typeof style !== undef)
-				params.style = style
-			if (typeof mood !== undef)
-				params.mood = mood
-			if (typeof born !== undef)
-				params.born = born
-			if (typeof formed !== undef)
-				params.formed = formed
-			if (typeof description !== undef)
-				params.description = description
-			if (typeof genre !== undef)
-				params.genre = genre
-			if (typeof died !== undef)
-				params.died = died
-			if (typeof disbanded !== undef)
-				params.disbanded = disbanded
-			if (typeof yearsActive !== undef)
-				params.yearsactive = yearsActive
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('AudioLibrary.SetArtistDetails', params, success, error)
-		},
-		SetSongDetails : function(songId, title, artist, albumArtist, genre, year, rating, album, track, disc, duration, comment, musicBrainzTrackId,
-				musicBrainzArtistId, musicBrainzAlbumId, musicBrainzAlbumArtistId, successCB, errorCB) {
-			if (typeof songId === undef)
-				throw ERR_SONG_ID
-			var params = {
-				songid : songId
-			}
-			if (typeof title !== undef)
-				params.title = title
-			if (typeof artist !== undef)
-				params.artist = artist
-			if (typeof albumArtist !== undef)
-				params.albumartist = albumArtist
-			if (typeof genre !== undef)
-				params.genre = genre
-			if (typeof year !== undef)
-				params.year = year
-			if (typeof rating !== undef)
-				params.rating = rating
-			if (typeof album !== undef)
-				params.album = album
-			if (typeof track !== undef)
-				params.track = track
-			if (typeof disc !== undef)
-				params.disc = disc
-			if (typeof duration !== undef)
-				params.duration = duration
-			if (typeof comment !== undef)
-				params.comment = comment
-			if (typeof musicBrainzTrackId !== undef)
-				params.musicbrainztrackid = musicBrainzTrackId
-			if (typeof musicBrainzArtistId !== undef)
-				params.musicbrainzartistid = musicBrainzArtistId
-			if (typeof musicBrainzAlbumId !== undef)
-				params.musicbrainzalbumid = musicBrainzAlbumId
-			if (typeof musicBrainzAlbumArtistId !== undef)
-				params.musicbrainzalbumartistid = musicBrainzAlbumArtistId
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('AudioLibrary.SetSongDetails', params, success, error)
-		}
-	}
-
-	// AudioLibrary API convenience methods
-	AudioLibrary.prototype.clean = AudioLibrary.prototype.Clean
-	AudioLibrary.prototype.getAlbumDetails = AudioLibrary.prototype.GetAlbumDetails
-	AudioLibrary.prototype.getAlbums = AudioLibrary.prototype.GetAlbums
-	AudioLibrary.prototype.getArtistDetails = AudioLibrary.prototype.GetArtistDetails
-	AudioLibrary.prototype.getArtist = AudioLibrary.prototype.GetArtist
-	AudioLibrary.prototype.getGenres = AudioLibrary.prototype.GetGenres
-	AudioLibrary.prototype.getRecentlyAddedAlbums = AudioLibrary.prototype.GetRecentlyAddedAlbums
-	AudioLibrary.prototype.getRecentlyAddedSongs = AudioLibrary.prototype.GetRecentlyAddedSongs
-	AudioLibrary.prototype.getRecentlyPlayedAlbums = AudioLibrary.prototype.GetRecentlyPlayedAlbums
-	AudioLibrary.prototype.getRecentlyPlayedSongs = AudioLibrary.prototype.GetRecentlyPlayedSongs
-	AudioLibrary.prototype.getSongDetails = AudioLibrary.prototype.GetSongDetails
-	AudioLibrary.prototype.getSongs = AudioLibrary.prototype.GetSongs
-	AudioLibrary.prototype.scan = AudioLibrary.prototype.Scan
-	AudioLibrary.prototype.setAlbumDetails = AudioLibrary.prototype.SetAlbumDetails
-	AudioLibrary.prototype.setArtistDetails = AudioLibrary.prototype.SetArtistDetails
-	AudioLibrary.prototype.setSongDetails = AudioLibrary.prototype.SetSongDetails
-	AudioLibrary.prototype.setAlbumDetailsByObject = function(params, successCB, errorCB) {
-		var albumId = albumDetails.albumid
-		if (typeof albumId === undef)
-			throw ERR_ALBUM_ID
-		var success = successCB || successHandler
-		var error = errorCB || errorHandler
-		rpc.call('AudioLibrary.SetAlbumDetails', params, success, error)
-	}
-	AudioLibrary.prototype.setArtistDetailsByObject = function(params, successCB, errorCB) {
-		var artistId = artistDetails.artistid
-		if (typeof artistId === undef)
-			throw ERR_ARTIST_ID
-		var success = successCB || successHandler
-		var error = errorCB || errorHandler
-		rpc.call('AudioLibrary.SetArtistDetails', params, success, error)
-	}
-	AudioLibrary.prototype.setSongDetailsByObject = function(songDetails, successCB, errorCB) {
-		var songId = songDetails.songid
-		if (typeof songId === undef)
-			throw ERR_SONG_ID
-		var success = successCB || successHandler
-		var error = errorCB || errorHandler
-		rpc.call('AudioLibrary.SetSongDetails', params, success, error)
-	}
-
-	/**
-	 * A JS library wrapper for Files API
-	 * 
-	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#Files
-	 */
-	// TODO: needs more testing
-	// FIXME: Both PrepareDownload and Download in this implementation are
-	// currently broken as they only work over HTTP request not WebSockets
-	var Files = function() {
-		if (typeof rpc === undef || rpc == null)
-			throw ERR_NOT_INITIALIZED
-	}
-
-	// Files API core methods
-	Files.prototype = {
-		Download : function(path, successCB, errorCB) {
-			if (typeof path === undef)
-				throw ERR_PATH
-			var params = {
-				path : path
-			}
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.callAJAX('Files.Download', params, success, error)
-		},
-		GetDirectory : function(directory, files, properties, sort, successCB, errorCB) {
-			if (typeof direcotry === undef)
-				throw ERR_DIRECTORY
-			var params = {
-				directory : directory
-			}
-			if (typeof files !== undef)
-				params.files = files
-			if (typeof properties !== undef)
-				params.properties = properties
-			if (typeof sort !== undef)
-				params.sort = sort
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('Files.GetDirectory', params, success, error)
-		},
-		GetFileDetails : function(media, files, properties, successCB, errorCB) {
-			if (typeof media === undef)
-				throw ERR_MEDIA
-			var params = {
-				media : media
-			}
-			if (typeof files !== undef)
-				params.files = files
-			if (typeof properties !== undef)
-				params.properties = properties
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('Files.GetFileDetails', params, success, error)
-		},
-		GetSources : function(media, limits, sort, successCB, errorCB) {
-			if (typeof media === undef)
-				throw ERR_MEDIA
-			var params = {
-				media : media
-			}
-			if (typeof limits !== undef)
-				params.limits = limits
-			if (typeof sort !== undef)
-				params.sort = sort
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('Files.GetSources', params, success, error)
-		},
-		PrepareDownload : function(path, successCB, errorCB) {
-			if (typeof path === undef)
-				throw ERR_PATH
-			var params = {
-				path : path
-			}
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.callAJAX('Files.PrepareDownload', params, success, error)
-		}
-	}
-
-	// Files API convenience methods
-	Files.prototype.download = Files.prototype.Download
-	Files.prototype.getDirectory = Files.prototype.GetDirectory
-	Files.prototype.getFileDetails = Files.prototype.GetFileDetails
-	Files.prototype.getSources = Files.prototype.GetSources
-	Files.prototype.prepareDownload = Files.prototype.PrepareDownload
-
-	/**
-	 * A JS library wrapper for Application API
-	 * 
-	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#Application
-	 */
-	// TODO: needs testing
-	var Application = function() {
-		if (typeof rpc === undef || rpc == null)
-			throw ERR_NOT_INITIALIZED
-	}
-
-	// Application API core methods
-	Application.prototype = {
-		GetProperties : function(propertyNames, successCB, errorCB) {
-			var params = {}
-			if (typeof propertyNames !== undef)
-				params.properties = propertyNames
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('Application.GetProperties', params, success, error)
-		},
-		Quit : function(successCB, errorCB) {
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('Application.Quit', {}, success, error)
-		},
-		SetMute : function(muteToggle, successCB, errorCB) {
-			if (typeof muteToggle === undef)
-				throw ERR_MUTE_TOGGLE
-			var params = {
-				mute : muteToggle
-			}
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('Application.SetMute', params, success, error)
-		},
-		SetVolume : function(volume, successCB, errorCB) {
-			if (typeof volume === undef)
-				throw ERR_VOLUME
-			var params = {
-				volume : volume
-			}
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('Application.SetVolume', params, success, error)
-		}
-	}
-
-	// Application API convenience methods
-	Application.prototype.getProperties = Application.prototype.GetProperties
-	Application.prototype.quit = Application.prototype.Quit
-	Application.prototype.setMute = Application.prototype.SetMute
-	Application.prototype.setVolume = Application.prototype.SetVolume
-
-	// For added convenience there is no need to have new XBMC.XBMC() as this
-	// just looks ugly
 	XBMC.prototype.GetInfoBooleans = function(booleans, successCB, errorCB) {
 		if (typeof booleans === undef)
 			throw ERR_BOOLEANS
@@ -1266,218 +1528,15 @@
 		getInfoLabels : XBMC.prototype.GetInfoLabels
 	}
 
-	/**
-	 * A JS library wrapper for Addons API
-	 * 
-	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#Addons
-	 */
-	// TODO: needs testing
-	var Addons = function() {
-		if (typeof rpc === undef || rpc == null)
-			throw ERR_NOT_INITIALIZED
-	}
-
-	// Addons API core methods
-	Addons.prototype = {
-		ExecuteAddon : function(addonId, parameters, wait, successCB, errorCB) {
-			if (typeof addonId === undef)
-				throw ERR_ADDON_ID
-			var params = {
-				addonid : addonId
-			}
-			if (typeof parameters !== undef)
-				params.params = parameters
-			if (typeof wait !== undef)
-				params.wait = wait
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('Addons.ExecuteAddon', params, success, error)
-		},
-		GetAddonDetails : function(addonId, properties, successCB, errorCB) {
-			if (typeof addonId === undef)
-				throw ERR_ADDON_ID
-			var params = {
-				addonid : addonId
-			}
-			if (typeof properties !== undef)
-				params.properties = properties
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('Addons.GetAddonDetails', params, success, error)
-		},
-		GetAddons : function(type, content, enabled, properties, limits, successCB, errorCB) {
-			var params = {}
-			if (typeof type !== undef)
-				params.type = type
-			if (typeof content !== undef)
-				params.content = content
-			if (typeof enabled !== undef)
-				params.enabled = enabled
-			if (typeof properties !== undef)
-				params.properties = properties
-			if (typeof limits !== undef)
-				params.limits = limits
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('Addons.GetAddons', params, success, error)
-		},
-		SetAddonEnabled : function(addonId, enabled, successCB, errorCB) {
-			if (typeof addonId === undef)
-				throw ERR_ADDON_ID
-			if (typeof enabled === undef)
-				throw ERR_ENABLED
-			var params = {
-				addonid : addonId,
-				enabled : enabled
-			}
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('Addons.SetAddonEnabled', params, success, error)
-		}
-	}
-
-	// Addons API convenience methods
-	Addons.prototype.executeAddon = Addons.prototype.ExecuteAddon
-	Addons.prototype.getAddonDetails = Addons.prototype.GetAddonDetails
-	Addons.prototype.getAddons = Addons.prototype.GetAddons
-	Addons.prototype.setAddonEnabled = Addons.prototype.SetAddonEnabled
-
-	/**
-	 * A JS library wrapper for GUI API
-	 * 
-	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#GUI
-	 */
-	// TODO: needs testing
-	var GUI = function() {
-		if (typeof rpc === undef || rpc == null)
-			throw ERR_NOT_INITIALIZED
-	}
-
-	// GUI API core methods
-	GUI.prototype = {
-		ActivateWindow : function(window, properties, successCB, errorCB) {
-			if (typeof window === undef)
-				throw ERR_WINDOW
-			var params = {
-				window : window
-			}
-			if (typeof properties !== undef)
-				params.properties = properties
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('GUI.ActivateWindow', params, success, error)
-		},
-		GetProperties : function(properties, successCB, errorCB) {
-			if (typeof properties === undef)
-				throw ERR_PROPERTIES
-			var params = {
-				properties : properties
-			}
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('GUI.GetProperties', params, success, error)
-		},
-		SetFullscreen : function(fullscreen, successCB, errorCB) {
-			if (typeof fullscreen === undef)
-				throw ERR_FULLSCREEN
-			var params = {
-				fullscreen : fullscreen
-			}
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('GUI.SetFullscreen', params, success, error)
-		},
-		ShowNotification : function(title, message, image, displayTime, successCB, errorCB) {
-			if (typeof title === undef)
-				throw ERR_TITLE
-			if (typeof message === undef)
-				throw ERR_MESSAGE
-			var params = {
-				title : title,
-				message : message
-			}
-			if (typeof image !== undef)
-				params.image = image
-			if (typeof displayTime !== undef)
-				params.displaytime = displayTime
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('GUI.ShowNotification', params, success, error)
-		}
-	}
-
-	// GUI API convenience methods
-	GUI.prototype.activateWindow = GUI.prototype.ActivateWindow
-	GUI.prototype.getProperties = GUI.prototype.GetProperties
-	GUI.prototype.setFullscreen = GUI.prototype.SetFullscreen
-	GUI.prototype.showNotification = GUI.prototype.ShowNotification
-
-	/**
-	 * A JS library wrapper for System API
-	 * 
-	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#System
-	 */
-	// TODO: needs testing
-	var System = function() {
-		if (typeof rpc === undef || rpc == null)
-			throw ERR_NOT_INITIALIZED
-	}
-
-	// System API core methods
-	System.prototype = {
-		EjectOpticalDrive : function(successCB, errorCB) {
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('System.EjectOpticalDrive', {}, success, error)
-		},
-		GetProperties : function(properties, successCB, errorCB) {
-			if (typeof properties === undef)
-				throw ERR_PROPERTIES
-			var params = {
-				properties : properties
-			}
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('System.GetProperties', params, success, error)
-		},
-		Hibernate : function(successCB, errorCB) {
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('System.Hibernate', {}, success, error)
-		},
-		Reboot : function(successCB, errorCB) {
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('System.Reboot', {}, success, error)
-		},
-		Shutdown : function(successCB, errorCB) {
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('System.Shutdown', {}, success, error)
-		},
-		Suspend : function(successCB, errorCB) {
-			var success = successCB || successHandler
-			var error = errorCB || errorHandler
-			rpc.call('System.Suspend', {}, success, error)
-		}
-	}
-
-	// System API convenience methods
-	System.prototype.ejectOpticalDrive = System.prototype.EjectOpticalDrive
-	System.prototype.getProperties = System.prototype.GetProperties
-	System.prototype.hibernate = Systme.prototype.Hibernate
-	System.prototype.shutdown = System.prototype.Shutdown
-	System.prototype.suspend = System.prototype.Suspend
-
 	XBMC.prototype = {
+		Addons : Addons,
 		Application : Application,
-		VideoLibrary : VideoLibrary,
 		AudioLibrary : AudioLibrary,
 		Files : Files,
-		XBMC : _XBMC,
-		Addons : Addons,
 		GUI : GUI,
-		Systme : System
+		System : System,
+		VideoLibrary : VideoLibrary,
+		XBMC : _XBMC
 	}
 
 	// add a custom direct access to server
