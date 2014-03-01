@@ -54,6 +54,13 @@
 	var ERR_MUTE_TOGGLE = MISSING_ERROR("Mute Toggle")
 	var ERR_BOOLEANS = MISSING_ERROR("Booleans array")
 	var ERR_LABELS = MISSING_ERROR("Labels array")
+	var ERR_ADDON_ID = MISSING_ERROR("Addon ID")
+	var ERR_ENABLED = MISSING_ERROR("Enabled boolean")
+	var ERR_WINDOW = MISSING_ERROR("Window")
+	var ERR_FULLSCREEN = MISSING_ERROR("Fullscreen Toggle")
+	var ERR_PROPERTIES = MISSING_ERROR("Properties")
+	var ERR_MESSAGE = MISSING_ERROR("Message")
+	var ERR_TITLE = MISSING_ERROR("Title")
 
 	/**
 	 * Create an undefined variable
@@ -1178,12 +1185,160 @@
 		getInfoLabels : XBMC.prototype.GetInfoLabels
 	}
 
+	/**
+	 * A JS library wrapper for Addons API
+	 * 
+	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#Addons
+	 */
+	// TODO: needs testing
+	var Addons = function() {
+		if (typeof rpc === undef || rpc == null)
+			throw ERR_NOT_INITIALIZED
+	}
+
+	// Addons API core methods
+	Addons.prototype = {
+		ExecuteAddon : function(addonId, parameters, wait, successCB, errorCB) {
+			if (typeof addonId === undef)
+				throw ERR_ADDON_ID
+			var params = {
+				addonid : addonId
+			}
+			if (typeof parameters !== undef)
+				params.params = parameters
+			if (typeof wait !== undef)
+				params.wait = wait
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Addons.ExecuteAddon', params, success, error)
+		},
+		GetAddonDetails : function(addonId, properties, successCB, errorCB) {
+			if (typeof addonId === undef)
+				throw ERR_ADDON_ID
+			var params = {
+				addonid : addonId
+			}
+			if (typeof properties !== undef)
+				params.properties = properties
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Addons.GetAddonDetails', params, success, error)
+		},
+		GetAddons : function(type, content, enabled, properties, limits, successCB, errorCB) {
+			var params = {}
+			if (typeof type !== undef)
+				params.type = type
+			if (typeof content !== undef)
+				params.content = content
+			if (typeof enabled !== undef)
+				params.enabled = enabled
+			if (typeof properties !== undef)
+				params.properties = properties
+			if (typeof limits !== undef)
+				params.limits = limits
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Addons.GetAddons', params, success, error)
+		},
+		SetAddonEnabled : function(addonId, enabled, successCB, errorCB) {
+			if (typeof addonId === undef)
+				throw ERR_ADDON_ID
+			if (typeof enabled === undef)
+				throw ERR_ENABLED
+			var params = {
+				addonid : addonId,
+				enabled : enabled
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Addons.SetAddonEnabled', params, success, error)
+		}
+	}
+
+	// Addons API convenience methods
+	Addons.prototype.executeAddon = Addons.prototype.ExecuteAddon
+	Addons.prototype.getAddonDetails = Addons.prototype.GetAddonDetails
+	Addons.prototype.getAddons = Addons.prototype.GetAddons
+	Addons.prototype.setAddonEnabled = Addons.prototype.SetAddonEnabled
+
+	/**
+	 * A JS library wrapper for GUI API
+	 * 
+	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#GUI
+	 */
+	// TODO: needs testing
+	var GUI = function() {
+		if (typeof rpc === undef || rpc == null)
+			throw ERR_NOT_INITIALIZED
+	}
+
+	// GUI API core methods
+	GUI.prototype = {
+		ActivateWindow : function(window, properties, successCB, errorCB) {
+			if (typeof window === undef)
+				throw ERR_WINDOW
+			var params = {
+				window : window
+			}
+			if (typeof properties !== undef)
+				params.properties = properties
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('GUI.ActivateWindow', params, success, error)
+		},
+		GetProperties : function(properties, successCB, errorCB) {
+			if (typeof properties === undef)
+				throw ERR_PROPERTIES
+			var params = {
+				properties : properties
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('GUI.GetProperties', params, success, error)
+		},
+		SetFullscreen : function(fullscreen, successCB, errorCB) {
+			if (typeof fullscreen === undef)
+				throw ERR_FULLSCREEN
+			var params = {
+				fullscreen : fullscreen
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('GUI.SetFullscreen', params, success, error)
+		},
+		ShowNotification : function(title, message, image, displayTime, successCB, errorCB) {
+			if (typeof title === undef)
+				throw ERR_TITLE
+			if (typeof message === undef)
+				throw ERR_MESSAGE
+			var params = {
+				title : title,
+				message : message
+			}
+			if (typeof image !== undef)
+				params.image = image
+			if (typeof displayTime !== undef)
+				params.displaytime = displayTime
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('GUI.ShowNotification', params, success, error)
+		}
+	}
+
+	// GUI API convenience methods
+	GUI.prototype.activateWindow = GUI.prototype.ActivateWindow
+	GUI.prototype.getProperties = GUI.prototype.GetProperties
+	GUI.prototype.setFullscreen = GUI.prototype.SetFullscreen
+	GUI.prototype.showNotification = GUI.prototype.ShowNotification
+
 	XBMC.prototype = {
 		Application : Application,
 		VideoLibrary : VideoLibrary,
 		AudioLibrary : AudioLibrary,
 		Files : Files,
-		XBMC : _XBMC
+		XBMC : _XBMC,
+		Addons : Addons,
+		GUI : GUI
 	}
 
 	// add a custom direct access to server

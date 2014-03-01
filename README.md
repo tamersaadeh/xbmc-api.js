@@ -5,7 +5,7 @@ A wrapper of a JSON-RPC API for XBMC based on v6 (XBMC 12) in JavaScript for bro
 
 XBMC 13 should have more or less the same api, except for minor changes, so I will probably add support for it soon.
 
-Currently only Files, VideoLibrary, and AudioLibrary, Application, XBMC (also available under the main api) are fully implemented, but I'm working slowly on the rest.
+Currently only Files, VideoLibrary, AudioLibrary, Application, XBMC (also available under the main api), Addons, and GUI are fully implemented, but I'm working slowly on the rest.
 
 All files in this repository are licensed under 4-clause BSD, see LICENSE file for more details. Except all files under dependencies, those follow different ones.
 
@@ -17,9 +17,17 @@ Dependencies
 
 TODO
 -------------
+* add missing API
 * remove all dependencies
 * add tests to the code (or at least test all functionalities)
 
+Missing API (to be implemented)
+------------
+* JSONRPC
+* Player
+* Playlist
+* Input
+* System
 
 Sample Usage
 -------------
