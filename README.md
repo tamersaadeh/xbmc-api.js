@@ -20,6 +20,7 @@ Missing API (to be implemented)
 * JSONRPC
 * Player
 * Playlist
+* PVR
 * Input
 * System
 
