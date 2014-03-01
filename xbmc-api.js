@@ -1412,6 +1412,63 @@
 	GUI.prototype.setFullscreen = GUI.prototype.SetFullscreen
 	GUI.prototype.showNotification = GUI.prototype.ShowNotification
 
+	/**
+	 * A JS library wrapper for System API
+	 * 
+	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#System
+	 */
+	// TODO: needs testing
+	var System = function() {
+		if (typeof rpc === undef || rpc == null)
+			throw ERR_NOT_INITIALIZED
+	}
+
+	// System API core methods
+	System.prototype = {
+		EjectOpticalDrive : function(successCB, errorCB) {
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('System.EjectOpticalDrive', {}, success, error)
+		},
+		GetProperties : function(properties, successCB, errorCB) {
+			if (typeof properties === undef)
+				throw ERR_PROPERTIES
+			var params = {
+				properties : properties
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('System.GetProperties', params, success, error)
+		},
+		Hibernate : function(successCB, errorCB) {
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('System.Hibernate', {}, success, error)
+		},
+		Reboot : function(successCB, errorCB) {
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('System.Reboot', {}, success, error)
+		},
+		Shutdown : function(successCB, errorCB) {
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('System.Shutdown', {}, success, error)
+		},
+		Suspend : function(successCB, errorCB) {
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('System.Suspend', {}, success, error)
+		}
+	}
+
+	// System API convenience methods
+	System.prototype.ejectOpticalDrive = System.prototype.EjectOpticalDrive
+	System.prototype.getProperties = System.prototype.GetProperties
+	System.prototype.hibernate = Systme.prototype.Hibernate
+	System.prototype.shutdown = System.prototype.Shutdown
+	System.prototype.suspend = System.prototype.Suspend
+
 	XBMC.prototype = {
 		Application : Application,
 		VideoLibrary : VideoLibrary,
@@ -1419,7 +1476,8 @@
 		Files : Files,
 		XBMC : _XBMC,
 		Addons : Addons,
-		GUI : GUI
+		GUI : GUI,
+		Systme : System
 	}
 
 	// add a custom direct access to server

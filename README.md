@@ -20,7 +20,6 @@ Missing API (to be implemented)
 * Player
 * Playlist
 * Input
-* System
 
 Sample Usage
 -------------
