@@ -3,7 +3,7 @@
  * 
  * This wrapper was written by Tamer Saadeh <tamer@tamersaadeh.com>, 2014
  * 
- * Version: 0.4.0
+ * Version: 0.4.1
  * 
  * This file is licensed under 4-clause BSD, see LICENSE file for more details
  */
@@ -64,6 +64,11 @@
 	var undef = "undefined"
 
 	/**
+	 * Create a function string
+	 */
+	var func = "function"
+
+	/**
 	 * Create a WebSocket string
 	 */
 	var WEBSOCKET = "WebSocket"
@@ -109,17 +114,17 @@
 
 		if (typeof socketUrl !== undef && WEBSOCKET in window) {
 			this.socketUrl = socketUrl
-
 			this.websocket = new WebSocet(socketUrl)
 		}
+
 		// used to keep track of the JSON RPC ID
 		this.id = 0
 	}
 
 	RpcClient.prototype.callAJAX = function(method, params, successCB, errorCB) {
 		// make sure they are actually functions
-		successCB = typeof successCB === 'function' ? successCB : successHandler
-		errorCB = typeof errorCB === 'function' ? errorCB : errorHandler
+		successCB = typeof successCB === func ? successCB : successHandler
+		errorCB = typeof errorCB === func ? errorCB : errorHandler
 		var request = {
 			jsonrpc : '2.0',
 			method : method,
@@ -138,8 +143,8 @@
 
 	RpcClient.prototype.call = function(method, params, successCB, errorCB) {
 		// make sure they are actually functions
-		successCB = typeof successCB === 'function' ? successCB : successHandler
-		errorCB = typeof errorCB === 'function' ? errorCB : errorHandler
+		successCB = typeof successCB === func ? successCB : successHandler
+		errorCB = typeof errorCB === func ? errorCB : errorHandler
 		var request = {
 			jsonrpc : '2.0',
 			method : method,
@@ -225,6 +230,8 @@
 		Clean : function(successCB, errorCB) {
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.Clean', {}, success, error)
 		},
 		Export : function(options, successCB, errorCB) {
@@ -233,6 +240,8 @@
 				params.options = options
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.Export', params, success, error)
 		},
 		GetEpisodeDetails : function(episodeId, properties, successCB, errorCB) {
@@ -245,6 +254,8 @@
 				params.properties = properties
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.GetEpisodeDetails', params, success, error)
 		},
 		GetEpisodes : function(tvShowId, season, properties, limits, sort, filter, successCB, errorCB) {
@@ -263,6 +274,8 @@
 				params.filter = filter
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.GetEpisodes', params, success, error)
 		},
 		GetGenres : function(type, properties, limits, sort, successCB, errorCB) {
@@ -279,6 +292,8 @@
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.GetGenres', params, success, error)
 		},
 		GetMovieDetails : function(movieId, properties, successCB, errorCB) {
@@ -291,6 +306,8 @@
 				params.properties = properties
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.GetMovieDetails', params, success, error)
 		},
 		GetMovieSetDetails : function(setId, properties, movies, successCB, errorCB) {
@@ -305,6 +322,8 @@
 				params.movies = movies
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.GetMovieSetDetails', params, success, error)
 		},
 		GetMovieSets : function(properties, limits, sort, successCB, errorCB) {
@@ -317,6 +336,8 @@
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.GetMovieSets', params, success, error)
 		},
 		GetMovies : function(properties, limits, sort, filter, successCB, errorCB) {
@@ -331,6 +352,8 @@
 				params.filter = filter
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.GetMovies', params, success, error)
 		},
 		GetMusicVideoDetails : function(musicVideoId, properties, successCB, errorCB) {
@@ -343,6 +366,8 @@
 				params.properties = properties
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.GetMusicVideoDetails', params, success, error)
 		},
 		GetMusicVideos : function(properties, limits, sort, filter, successCB, errorCB) {
@@ -357,6 +382,8 @@
 				params.filter = filter
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.GetMusicVideos', params, success, error)
 		},
 		GetRecentlyAddedEpisodes : function(properties, limits, sort, successCB, errorCB) {
@@ -369,6 +396,8 @@
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.GetRecentlyAddedEpisodes', params, success, error)
 		},
 		GetRecentlyAddedMovies : function(properties, limits, sort, successCB, errorCB) {
@@ -381,6 +410,8 @@
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.GetRecentlyAddedMovies', params, success, error)
 		},
 		GetRecentlyAddedMusicVideos : function(properties, limits, sort, successCB, errorCB) {
@@ -393,6 +424,8 @@
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.GetRecentlyAddedMusicVideos', params, success, error)
 		},
 		GetSeasons : function(tvShowId, properties, limits, sort, successCB, errorCB) {
@@ -409,6 +442,8 @@
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.GetSeasons', params, success, error)
 		},
 		GetTVShowDetails : function(tvShowId, properties, successCB, errorCB) {
@@ -421,6 +456,8 @@
 				params.properties = properties
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.GetTVShowDetails', success, error)
 		},
 		GetTVShows : function(properties, limits, sort, filter, successCB, errorCB) {
@@ -435,6 +472,8 @@
 				params.filter = filter
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.GetTVShows', params, success, error)
 		},
 		RemoveEpisode : function(episodeId, successCB, errorCB) {
@@ -445,6 +484,8 @@
 			}
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.RemoveEpisode', params, success, error)
 		},
 		RemoveMovie : function(movieId, successCB, errorCB) {
@@ -455,6 +496,8 @@
 			}
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.RemoveMovie', params, success, error)
 		},
 		RemoveMusicVideo : function(musicVideoId, successCB, errorCB) {
@@ -465,6 +508,8 @@
 			}
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.RemoveMusicVideo', params, success, error)
 		},
 		RemoveTVShow : function(tvShowId, successCB, errorCB) {
@@ -475,6 +520,8 @@
 			}
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.RemoveTVShow', params, success, error)
 		},
 		Scan : function(directory, successCB, errorCB) {
@@ -483,6 +530,8 @@
 				params.directory = directory
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.Scan', params, success, error)
 		},
 		SetEpisodeDetails : function(episodeId, title, playCount, runTime, director, plot, rating, votes, lastPlayed, writer, firstAired,
@@ -528,6 +577,8 @@
 				params.art = art
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.SetEpisodeDetails', params, success, error)
 		},
 		SetMovieDetails : function(movieId, title, playCount, runTime, director, studio, year, plot, genre, rating, mpaa, imdbNumber, votes,
@@ -594,6 +645,8 @@
 				params.art = art
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.SetMovieDetails', params, success, error)
 		},
 		SetMusicVideoDetails : function(musicVideoId, title, playCount, runTime, director, studio, year, plot, album, artist, genre, track,
@@ -637,6 +690,8 @@
 				params.art = art
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.SetMusicVideoDetails', params, success, error)
 		},
 		SetTVShowDetails : function(tvShowId, title, playCount, studio, plot, rating, mpaa, imdbNumber, premiered, votes, lastPlayed, originalTitle,
@@ -682,6 +737,8 @@
 				params.art = art
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('VideoLibrary.SetTVShowDetails', params, success, error)
 		}
 	}
@@ -718,6 +775,8 @@
 			throw ERR_EPISODE_ID
 		var success = successCB || successHandler
 		var error = errorCB || errorHandler
+		success = typeof success === func ? success : successHandler
+		error = typeof error === func ? error : errorHandler
 		rpc.call('VideoLibrary.SetEpisodeDetails', params, success, error)
 	}
 	VideoLibrary.prototype.setMovieDetailsByObject = function(params, successCB, errorCB) {
@@ -726,6 +785,8 @@
 			throw ERR_MOVIE_ID
 		var success = successCB || successHandler
 		var error = errorCB || errorHandler
+		success = typeof success === func ? success : successHandler
+		error = typeof error === func ? error : errorHandler
 		rpc.call('VideoLibrary.SetMovieDetails', params, success, error)
 	}
 	VideoLibrary.prototype.setMusicVideoDetailsByObject = function(params, successCB, errorCB) {
@@ -734,6 +795,8 @@
 			throw ERR_MUSIC_VIDEO_ID
 		var success = successCB || successHandler
 		var error = errorCB || errorHandler
+		success = typeof success === func ? success : successHandler
+		error = typeof error === func ? error : errorHandler
 		rpc.call('VideoLibrary.SetMusicVideoDetails', params, success, error)
 	}
 	VideoLibrary.prototype.setTVShowDetailsByObject = function(params, successCB, errorCB) {
@@ -742,6 +805,8 @@
 			throw ERR_TV_SHOW_ID
 		var success = successCB || successHandler
 		var error = errorCB || errorHandler
+		success = typeof success === func ? success : successHandler
+		error = typeof error === func ? error : errorHandler
 		rpc.call('VideoLibrary.SetTVShowDetails', params, success, error)
 	}
 
@@ -761,6 +826,8 @@
 		Clean : function(successCB, errorCB) {
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('AudioLibrary.Clean', {}, success, error)
 		},
 		Export : function(options, successCB, errorCB) {
@@ -769,6 +836,8 @@
 				params.options = options
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('AudioLibrary.Export', params, success, error)
 		},
 		GetAlbumDetails : function(albumId, properties, successCB, errorCB) {
@@ -781,6 +850,8 @@
 				params.properties = properties
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('AudioLibrary.GetAlbumDetails', params, success, error)
 		},
 		GetAlbums : function(properties, limits, sort, filter, successCB, errorCB) {
@@ -795,6 +866,8 @@
 				params.filter = filter
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('AudioLibrary.GetAlbums', params, success, error)
 		},
 		GetArtistDetails : function(artiestId, properties, successCB, errorCB) {
@@ -807,6 +880,8 @@
 				params.properties = properties
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('AudioLibrary.GetArtistDetails', params, success, error)
 		},
 		GetArtist : function(albumArtistsOnly, properties, limits, sort, filter, successCB, errorCB) {
@@ -827,6 +902,8 @@
 				params.filter = filter
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('AudioLibrary.GetArtist', params, success, error)
 		},
 		GetGenres : function(properties, limits, sort, successCB, errorCB) {
@@ -839,6 +916,8 @@
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('AudioLibrary.GetGenres', params, success, error)
 		},
 		GetRecentlyAddedAlbums : function(properties, limits, sort, successCB, errorCB) {
@@ -851,6 +930,8 @@
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('AudioLibrary.GetRecentlyAddedAlbums', params, success, error)
 		},
 		GetRecentlyAddedSongs : function(albumLimit, properties, limits, sort, successCB, errorCB) {
@@ -865,6 +946,8 @@
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('AudioLibrary.GetRecentlyAddedSongs', params, success, error)
 		},
 		GetRecentlyPlayedAlbums : function(properties, limits, sort, successCB, errorCB) {
@@ -877,6 +960,8 @@
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('AudioLibrary.GetRecentlyPlayedAlbums', params, success, error)
 		},
 		GetRecentlyPlayedSongs : function(properties, limits, sort, successCB, errorCB) {
@@ -889,6 +974,8 @@
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('AudioLibrary.GetRecentlyPlayedSongs', params, success, error)
 		},
 		GetSongDetails : function(songId, properties, successCB, errorCB) {
@@ -901,6 +988,8 @@
 				params.properties = properties
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('AudioLibrary.GetSongDetails', params, success, error)
 		},
 		GetSongs : function(properties, limits, sort, filter, successCB, errorCB) {
@@ -915,6 +1004,8 @@
 				params.filter = filter
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('AudioLibrary.GetSongs', params, success, error)
 		},
 		Scan : function(directory, successCB, errorCB) {
@@ -923,6 +1014,8 @@
 				params.directory = directory
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('AudioLibrary.Scan', params, success, error)
 		},
 		SetAlbumDetails : function(albumId, title, artist, description, genre, theme, mood, style, type, albumLabel, rating, year, successCB, errorCB) {
@@ -955,6 +1048,8 @@
 				params.year = year
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('AudioLibrary.SetAlbumDetails', params, success, error)
 		},
 		SetArtistDetails : function(artistId, artist, instrument, style, mood, born, formed, description, genre, died, disbanded, yearsActive,
@@ -988,6 +1083,8 @@
 				params.yearsactive = yearsActive
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('AudioLibrary.SetArtistDetails', params, success, error)
 		},
 		SetSongDetails : function(songId, title, artist, albumArtist, genre, year, rating, album, track, disc, duration, comment, musicBrainzTrackId,
@@ -1029,6 +1126,8 @@
 				params.musicbrainzalbumartistid = musicBrainzAlbumArtistId
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('AudioLibrary.SetSongDetails', params, success, error)
 		}
 	}
@@ -1056,6 +1155,8 @@
 			throw ERR_ALBUM_ID
 		var success = successCB || successHandler
 		var error = errorCB || errorHandler
+		success = typeof success === func ? success : successHandler
+		error = typeof error === func ? error : errorHandler
 		rpc.call('AudioLibrary.SetAlbumDetails', params, success, error)
 	}
 	AudioLibrary.prototype.setArtistDetailsByObject = function(params, successCB, errorCB) {
@@ -1064,6 +1165,8 @@
 			throw ERR_ARTIST_ID
 		var success = successCB || successHandler
 		var error = errorCB || errorHandler
+		success = typeof success === func ? success : successHandler
+		error = typeof error === func ? error : errorHandler
 		rpc.call('AudioLibrary.SetArtistDetails', params, success, error)
 	}
 	AudioLibrary.prototype.setSongDetailsByObject = function(songDetails, successCB, errorCB) {
@@ -1072,6 +1175,8 @@
 			throw ERR_SONG_ID
 		var success = successCB || successHandler
 		var error = errorCB || errorHandler
+		success = typeof success === func ? success : successHandler
+		error = typeof error === func ? error : errorHandler
 		rpc.call('AudioLibrary.SetSongDetails', params, success, error)
 	}
 
@@ -1098,6 +1203,8 @@
 			}
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.callAJAX('Files.Download', params, success, error)
 		},
 		GetDirectory : function(directory, files, properties, sort, successCB, errorCB) {
@@ -1114,6 +1221,8 @@
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('Files.GetDirectory', params, success, error)
 		},
 		GetFileDetails : function(media, files, properties, successCB, errorCB) {
@@ -1128,6 +1237,8 @@
 				params.properties = properties
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('Files.GetFileDetails', params, success, error)
 		},
 		GetSources : function(media, limits, sort, successCB, errorCB) {
@@ -1142,6 +1253,8 @@
 				params.sort = sort
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('Files.GetSources', params, success, error)
 		},
 		PrepareDownload : function(path, successCB, errorCB) {
@@ -1152,6 +1265,8 @@
 			}
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.callAJAX('Files.PrepareDownload', params, success, error)
 		}
 	}
@@ -1182,11 +1297,15 @@
 				params.properties = propertyNames
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('Application.GetProperties', params, success, error)
 		},
 		Quit : function(successCB, errorCB) {
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('Application.Quit', {}, success, error)
 		},
 		SetMute : function(muteToggle, successCB, errorCB) {
@@ -1197,6 +1316,8 @@
 			}
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('Application.SetMute', params, success, error)
 		},
 		SetVolume : function(volume, successCB, errorCB) {
@@ -1207,6 +1328,8 @@
 			}
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('Application.SetVolume', params, success, error)
 		}
 	}
@@ -1227,6 +1350,8 @@
 		}
 		var success = successCB || successHandler
 		var error = errorCB || errorHandler
+		success = typeof success === func ? success : successHandler
+		error = typeof error === func ? error : errorHandler
 		rpc.call('XBMC.GetInfoBooleans', params, success, error)
 	}
 	XBMC.prototype.GetInfoLabels = function(labels, successCB, errorCB) {
@@ -1237,6 +1362,8 @@
 		}
 		var success = successCB || successHandler
 		var error = errorCB || errorHandler
+		success = typeof success === func ? success : successHandler
+		error = typeof error === func ? error : errorHandler
 		rpc.call('XBMC.GetInfoLabels', params, success, error)
 	}
 	XBMC.prototype.getInfoBooleans = XBMC.prototype.GetInfoBooleans
@@ -1286,6 +1413,8 @@
 				params.wait = wait
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('Addons.ExecuteAddon', params, success, error)
 		},
 		GetAddonDetails : function(addonId, properties, successCB, errorCB) {
@@ -1298,6 +1427,8 @@
 				params.properties = properties
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('Addons.GetAddonDetails', params, success, error)
 		},
 		GetAddons : function(type, content, enabled, properties, limits, successCB, errorCB) {
@@ -1314,6 +1445,8 @@
 				params.limits = limits
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('Addons.GetAddons', params, success, error)
 		},
 		SetAddonEnabled : function(addonId, enabled, successCB, errorCB) {
@@ -1327,6 +1460,8 @@
 			}
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('Addons.SetAddonEnabled', params, success, error)
 		}
 	}
@@ -1360,6 +1495,8 @@
 				params.properties = properties
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('GUI.ActivateWindow', params, success, error)
 		},
 		GetProperties : function(properties, successCB, errorCB) {
@@ -1370,6 +1507,8 @@
 			}
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('GUI.GetProperties', params, success, error)
 		},
 		SetFullscreen : function(fullscreen, successCB, errorCB) {
@@ -1380,6 +1519,8 @@
 			}
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('GUI.SetFullscreen', params, success, error)
 		},
 		ShowNotification : function(title, message, image, displayTime, successCB, errorCB) {
@@ -1397,6 +1538,8 @@
 				params.displaytime = displayTime
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call('GUI.ShowNotification', params, success, error)
 		}
 	}
@@ -1422,6 +1565,8 @@
 		XBMC.prototype.custom = function(call, params, successCB, errorCB) {
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
+			success = typeof success === func ? success : successHandler
+			error = typeof error === func ? error : errorHandler
 			rpc.call(call, params, success, error)
 		}
 	}
