@@ -3,7 +3,7 @@
  * 
  * This wrapper was written by Tamer Saadeh <tamer@tamersaadeh.com>, 2014
  * 
- * Version: 0.4.0
+ * Version: 0.4.1
  * 
  * This file is licensed under 4-clause BSD, see LICENSE file for more details
  */
