@@ -98,9 +98,10 @@
 	}
 
 	/**
-	 * Private object for access the JSON-RPC API
+	 * RpcClient is a simple JSON-RPC 2.0 API to our uses only, but more
+	 * simplified than used several dependencies
 	 */
-	var rpc = function(ajaxUrl, socketUrl) {
+	var RpcClient = function(ajaxUrl, socketUrl) {
 		if (typeof ajaxUrl === undef || !(AJAX in window))
 			throw ERR_AJAX
 		this.ajaxUrl = ajaxUrl
@@ -115,7 +116,7 @@
 		this.id = 0
 	}
 
-	rpc.prototype.callAJAX = function(method, params, successCB, errorCB) {
+	RpcClient.prototype.callAJAX = function(method, params, successCB, errorCB) {
 		// make sure they are actually functions
 		successCB = typeof successCB === 'function' ? successCB : successHandler
 		errorCB = typeof errorCB === 'function' ? errorCB : errorHandler
@@ -132,10 +133,10 @@
 				errorCB(JSON.stringify(this.ajax))
 		}
 		xmlhttp.open("GET", this.ajaxUrl, true)
-		xmlhttp.send()
+		xmlhttp.send(request)
 	}
 
-	rpc.prototype.call = function(method, params, successCB, errorCB) {
+	RpcClient.prototype.call = function(method, params, successCB, errorCB) {
 		// make sure they are actually functions
 		successCB = typeof successCB === 'function' ? successCB : successHandler
 		errorCB = typeof errorCB === 'function' ? errorCB : errorHandler
@@ -157,9 +158,14 @@
 					errorCB(JSON.stringify(this.ajax))
 			}
 			xmlhttp.open("GET", this.ajaxUrl, true)
-			xmlhttp.send()
+			xmlhttp.send(request)
 		}
 	}
+
+	/**
+	 * Private object for access the JSON-RPC API
+	 */
+	var rpc
 
 	/**
 	 * Global object used to initialize and access the XBMC API
