@@ -3,7 +3,7 @@
  * 
  * This wrapper was written by Tamer Saadeh <tamer@tamersaadeh.com>, 2014
  * 
- * Version: 0.4.1
+ * Version: 0.4.2
  * 
  * This file is licensed under 4-clause BSD, see LICENSE file for more details
  */
@@ -27,6 +27,7 @@
 	var ERR_NOT_INITIALIZED = "XBMC API not initialized! Call `new XBMC(hostname, port)`!"
 	var DEFAULT_LOG_TAG = "XBMC API: "
 	var ERR_AJAX = "AJAX is not available"
+	var ERR_ANONYMOUS_REQUEST = "Received an anonymous request that we didn't send and as such no data is know about it"
 
 	/**
 	 * Helper function, just minimizes repetitions
@@ -83,7 +84,10 @@
 	 */
 	var errorHandler = function(e) {
 		setTimeout(function() {
-			throw new Error(DEFAULT_LOG_TAG + JSON.stringify(e))
+			if (e.data)
+				throw new Error(DEFAULT_LOG_TAG + e.data.method + ": " + e.message + " Stack: " + JSON.stringify(e.data.stack))
+			else
+				throw new Error(DEFAULT_LOG_TAG + JSON.stringify(e))
 		}, 0)
 	}
 
@@ -103,6 +107,15 @@
 	}
 
 	/**
+	 * Array helper to remove object
+	 */
+	var remove = function(arr, obj) {
+		var index = arr.indexOf(obj)
+		if (index > -1)
+			arr = arr.splice(index, 1)
+	}
+
+	/**
 	 * RpcClient is a simple JSON-RPC 2.0 API to our uses only, but more
 	 * simplified than used several dependencies
 	 */
@@ -110,60 +123,120 @@
 		if (typeof ajaxUrl === undef || !(AJAX in window))
 			throw ERR_AJAX
 		this.ajaxUrl = ajaxUrl
-		this.ajax = new XMLHttpRequest(ajaxUrl)
+		this.ajax = new XMLHttpRequest()
 
 		if (typeof socketUrl !== undef && WEBSOCKET in window) {
 			this.socketUrl = socketUrl
-			this.websocket = new WebSocet(socketUrl)
+			this.websocket = new WebSocket(socketUrl)
 		}
 
 		// used to keep track of the JSON RPC ID
 		this.id = 0
+
+		// used to keep track of requests
+		this.requests = []
 	}
 
 	RpcClient.prototype.callAJAX = function(method, params, successCB, errorCB) {
 		// make sure they are actually functions
 		successCB = typeof successCB === func ? successCB : successHandler
 		errorCB = typeof errorCB === func ? errorCB : errorHandler
-		var request = {
-			jsonrpc : '2.0',
-			method : method,
-			params : params,
-			id : this.id++
-		}
+
+		var self = this
 		this.ajax.onreadystatechange = function() {
-			if (this.ajax.readyState == 4 && this.ajax.status == 200)
-				successCB(this.ajax.responseText)
-			else
-				errorCB(JSON.stringify(this.ajax))
+			var request = {
+				jsonrpc : '2.0',
+				method : method,
+				params : params,
+				id : this.id
+			}
+			var ajax = self.ajax
+			ajax.onreadystatechange = function() {
+				if (ajax.readyState == 4 && ajax.status == 200) {
+					var d = JSON.parse(self.ajax.responseText.data)
+
+					// if this is a request we don't have recorded then there is
+					// no point of bothering with it
+					if (self.requests) {
+						remove(self.requests, request)
+						if (d.result)
+							successCB(d.result)
+						else
+							errorCB(d.error)
+					} else {
+						errorCB(ERR_ANONYMOUS_REQUEST)
+					}
+				} else
+					errorCB(self.ajax)
+			}
+			ajax.open("GET", this.ajaxUrl, true)
+			this.requests.push(this.request)
+			ajax.send(JSON.stringify(this.request))
+			this.id++
 		}
-		xmlhttp.open("GET", this.ajaxUrl, true)
-		xmlhttp.send(request)
 	}
 
 	RpcClient.prototype.call = function(method, params, successCB, errorCB) {
 		// make sure they are actually functions
 		successCB = typeof successCB === func ? successCB : successHandler
 		errorCB = typeof errorCB === func ? errorCB : errorHandler
+
 		var request = {
 			jsonrpc : '2.0',
 			method : method,
 			params : params,
-			id : this.id++
+			id : this.id
 		}
-		if (this.websocket) {
-			this.websocket.onmessage = successCB
-			this.websocket.onerror = errorCB
-			this.websocket.send(request)
-		} else {
-			this.ajax.onreadystatechange = function() {
-				if (this.ajax.readyState == 4 && this.ajax.status == 200)
-					successCB(this.ajax.responseText)
-				else
-					errorCB(JSON.stringify(this.ajax))
+
+		var ws = this.websocket
+		var self = this
+		if (ws) {
+			ws.onmessage = function(msg) {
+				var d = JSON.parse(msg.data)
+
+				// if this is a request we don't have recorded then there is
+				// no point of bothering with it
+				if (self.requests) {
+					remove(self.requests, request)
+					if (d.result)
+						successCB(d.result)
+					else
+						errorCB(d.error)
+				} else {
+					errorCB(ERR_ANONYMOUS_REQUEST)
+				}
 			}
-			xmlhttp.open("GET", this.ajaxUrl, true)
-			xmlhttp.send(request)
+
+			ws.onerror = errorCB
+			ws.onopen = function() {
+				self.requests.push(request)
+				ws.send(JSON.stringify(request))
+				self.id++
+			}
+		} else {
+			ajax.onreadystatechange = function() {
+				var ajax = self.ajax
+				if (ajax.readyState == 4 && ajax.status == 200) {
+					var d = JSON.parse(ajax.responseText.data)
+
+					// if this is a request we don't have recorded then there is
+					// no point of bothering with it
+					if (self.requests) {
+						remove(self.requests, request)
+						if (d.result)
+							successCB(d.result)
+						else
+							errorCB(d.error)
+					} else {
+						errorCB(ERR_ANONYMOUS_REQUEST)
+					}
+				} else
+					errorCB(self.ajax)
+			}
+			ajax.open("GET", this.ajaxUrl, true)
+			this.requests.push(this.request)
+			this.send(JSON.stringify(request))
+			this.id++
 		}
 	}
 
@@ -197,10 +270,7 @@
 		var speed = ping || 1000
 		directAccess = direct || directAccess
 
-		rpc = new RpcClient({
-			ajaxUrl : '/jsonrpc',
-			socketUrl : 'ws://' + h + ':' + p + '/'
-		})
+		rpc = new RpcClient('http://' + h + ':' + p + '/jsonrpc', 'ws://' + h + ':' + p + '/')
 
 		// if debug we print on success, otherwise we just eat it up
 		if (!debug) {
@@ -940,7 +1010,7 @@
 	// System API convenience methods
 	System.prototype.ejectOpticalDrive = System.prototype.EjectOpticalDrive
 	System.prototype.getProperties = System.prototype.GetProperties
-	System.prototype.hibernate = Systme.prototype.Hibernate
+	System.prototype.hibernate = System.prototype.Hibernate
 	System.prototype.shutdown = System.prototype.Shutdown
 	System.prototype.suspend = System.prototype.Suspend
 
