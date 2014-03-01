@@ -13,12 +13,14 @@ TODO
 -------------
 * add missing API
 * add tests to the code (or at least test all functionalities)
+* add more verbose and better examples
 
 Missing API (to be implemented)
 ------------
 * JSONRPC
 * Player
 * Playlist
+* PVR
 * Input
 
 Sample Usage
