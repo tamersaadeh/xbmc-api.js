@@ -64,6 +64,11 @@
 	var undef = "undefined"
 
 	/**
+	 * Create a function string
+	 */
+	var func = "function"
+
+	/**
 	 * Create a WebSocket string
 	 */
 	var WEBSOCKET = "WebSocket"
@@ -109,17 +114,17 @@
 
 		if (typeof socketUrl !== undef && WEBSOCKET in window) {
 			this.socketUrl = socketUrl
-
 			this.websocket = new WebSocet(socketUrl)
 		}
+
 		// used to keep track of the JSON RPC ID
 		this.id = 0
 	}
 
 	RpcClient.prototype.callAJAX = function(method, params, successCB, errorCB) {
 		// make sure they are actually functions
-		successCB = typeof successCB === 'function' ? successCB : successHandler
-		errorCB = typeof errorCB === 'function' ? errorCB : errorHandler
+		successCB = typeof successCB === func ? successCB : successHandler
+		errorCB = typeof errorCB === func ? errorCB : errorHandler
 		var request = {
 			jsonrpc : '2.0',
 			method : method,
@@ -138,8 +143,8 @@
 
 	RpcClient.prototype.call = function(method, params, successCB, errorCB) {
 		// make sure they are actually functions
-		successCB = typeof successCB === 'function' ? successCB : successHandler
-		errorCB = typeof errorCB === 'function' ? errorCB : errorHandler
+		successCB = typeof successCB === func ? successCB : successHandler
+		errorCB = typeof errorCB === func ? errorCB : errorHandler
 		var request = {
 			jsonrpc : '2.0',
 			method : method,
