@@ -26,7 +26,7 @@
 	 */
 	var ERR_NOT_INITIALIZED = "XBMC API not initialized! Call `new XBMC(hostname, port)`!"
 	var DEFAULT_LOG_TAG = "XBMC API: "
-	var ERR_AJAX_URL = "AJAX is not available"
+	var ERR_AJAX = "AJAX is not available"
 
 	/**
 	 * Helper function, just minimizes repetitions
