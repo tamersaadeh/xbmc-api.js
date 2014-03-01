@@ -7,18 +7,11 @@ XBMC 13 should have more or less the same api, except for minor changes, so I wi
 
 Currently only Files, VideoLibrary, AudioLibrary, Application, XBMC (also available under the main api), Addons, and GUI are fully implemented, but I'm working slowly on the rest.
 
-All files in this repository are licensed under 4-clause BSD, see LICENSE file for more details. Except all files under dependencies, those follow different ones.
-
-Dependencies
--------------
-* jQuery JsonRpcClient Plugin (main)
-  * jQuery
-  * jQuery JSON plugin
+All files in this repository are licensed under 4-clause BSD, see LICENSE file for more details.
 
 TODO
 -------------
 * add missing API
-* remove all dependencies
 * add tests to the code (or at least test all functionalities)
 
 Missing API (to be implemented)

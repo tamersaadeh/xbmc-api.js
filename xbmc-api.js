@@ -3,7 +3,7 @@
  * 
  * This wrapper was written by Tamer Saadeh <tamer@tamersaadeh.com>, 2014
  * 
- * Version: 0.3.0
+ * Version: 0.4.0
  * 
  * This file is licensed under 4-clause BSD, see LICENSE file for more details
  */
@@ -11,11 +11,6 @@
 // TODO: replace the dependency on jQuery/Json/JsonRpcClient
 (function(window) {
 	"use strict"
-
-	/**
-	 * Private object for access the JSON-RPC API
-	 */
-	var rpc
 
 	/**
 	 * This variable allows the direct function calls to the XBMC API server. It
@@ -31,6 +26,7 @@
 	 */
 	var ERR_NOT_INITIALIZED = "XBMC API not initialized! Call `new XBMC(hostname, port)`!"
 	var DEFAULT_LOG_TAG = "XBMC API: "
+	var ERR_AJAX_URL = "AJAX is not available"
 
 	/**
 	 * Helper function, just minimizes repetitions
@@ -63,9 +59,19 @@
 	var ERR_TITLE = MISSING_ERROR("Title")
 
 	/**
-	 * Create an undefined variable
+	 * Create an undefined string
 	 */
 	var undef = "undefined"
+
+	/**
+	 * Create a WebSocket string
+	 */
+	var WEBSOCKET = "WebSocket"
+
+	/**
+	 * Create a AJAX string
+	 */
+	var AJAX = "XMLHttpRequest"
 
 	/**
 	 * Default error handler (throws error).
@@ -89,6 +95,70 @@
 		setTimeout(function() {
 			console.log(DEFAULT_LOG_TAG + JSON.stringify(e))
 		}, 0)
+	}
+
+	/**
+	 * Private object for access the JSON-RPC API
+	 */
+	var rpc = function(ajaxUrl, socketUrl) {
+		if (typeof ajaxUrl === undef || !(AJAX in window))
+			throw ERR_AJAX
+		this.ajaxUrl = ajaxUrl
+		this.ajax = new XMLHttpRequest(ajaxUrl)
+
+		if (typeof socketUrl !== undef && WEBSOCKET in window) {
+			this.socketUrl = socketUrl
+
+			this.websocket = new WebSocet(socketUrl)
+		}
+		// used to keep track of the JSON RPC ID
+		this.id = 0
+	}
+
+	rpc.prototype.callAJAX = function(method, params, successCB, errorCB) {
+		// make sure they are actually functions
+		successCB = typeof successCB === 'function' ? successCB : successHandler
+		errorCB = typeof errorCB === 'function' ? errorCB : errorHandler
+		var request = {
+			jsonrpc : '2.0',
+			method : method,
+			params : params,
+			id : this.id++
+		}
+		this.ajax.onreadystatechange = function() {
+			if (this.ajax.readyState == 4 && this.ajax.status == 200)
+				successCB(this.ajax.responseText)
+			else
+				errorCB(JSON.stringify(this.ajax))
+		}
+		xmlhttp.open("GET", this.ajaxUrl, true)
+		xmlhttp.send()
+	}
+
+	rpc.prototype.call = function(method, params, successCB, errorCB) {
+		// make sure they are actually functions
+		successCB = typeof successCB === 'function' ? successCB : successHandler
+		errorCB = typeof errorCB === 'function' ? errorCB : errorHandler
+		var request = {
+			jsonrpc : '2.0',
+			method : method,
+			params : params,
+			id : this.id++
+		}
+		if (this.websocket) {
+			this.websocket.onmessage = successCB
+			this.websocket.onerror = errorCB
+			this.websocket.send(request)
+		} else {
+			this.ajax.onreadystatechange = function() {
+				if (this.ajax.readyState == 4 && this.ajax.status == 200)
+					successCB(this.ajax.responseText)
+				else
+					errorCB(JSON.stringify(this.ajax))
+			}
+			xmlhttp.open("GET", this.ajaxUrl, true)
+			xmlhttp.send()
+		}
 	}
 
 	/**
@@ -116,7 +186,7 @@
 		var speed = ping || 1000
 		directAccess = direct || directAccess
 
-		rpc = new $.JsonRpcClient({
+		rpc = new RpcClient({
 			ajaxUrl : '/jsonrpc',
 			socketUrl : 'ws://' + h + ':' + p + '/'
 		})
@@ -160,7 +230,7 @@
 			rpc.call('VideoLibrary.Export', params, success, error)
 		},
 		GetEpisodeDetails : function(episodeId, properties, successCB, errorCB) {
-			if (typeof episodeId === "undefined")
+			if (typeof episodeId === undef)
 				throw ERR_EPISODE_ID
 			var params = {
 				episodeid : episodeId
@@ -1022,7 +1092,7 @@
 			}
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
-			rpc.call('Files.Download', params, success, error)
+			rpc.callAJAX('Files.Download', params, success, error)
 		},
 		GetDirectory : function(directory, files, properties, sort, successCB, errorCB) {
 			if (typeof direcotry === undef)
@@ -1076,7 +1146,7 @@
 			}
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
-			rpc.call('Files.PrepareDownload', params, success, error)
+			rpc.callAJAX('Files.PrepareDownload', params, success, error)
 		}
 	}
 
