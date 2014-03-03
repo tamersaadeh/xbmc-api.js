@@ -1,5 +1,4 @@
-xbmc-api.js
-===========
+# xbmc-api.js
 
 A wrapper of a JSON-RPC API for XBMC based on v6 (XBMC 12) in JavaScript for browsers.
 
@@ -9,22 +8,19 @@ Currently only Files, VideoLibrary, AudioLibrary, Application, XBMC (also availa
 
 All files in this repository are licensed under 4-clause BSD, see LICENSE file for more details.
 
-TODO
--------------
+## TODO
 * add missing API
 * add tests to the code (or at least test all functionalities)
 * add more verbose and better examples
 
-Missing API (to be implemented)
-------------
+### Missing API (to be implemented)
 * JSONRPC
 * Player
 * Playlist
 * PVR
 * Input
 
-Sample Usage
--------------
+## Sample Usage
 
 ```
 var api = new XBMC()
