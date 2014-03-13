@@ -3,7 +3,7 @@
  * 
  * This wrapper was written by Tamer Saadeh <tamer@tamersaadeh.com>, 2014
  * 
- * Version: 0.4.2
+ * Version: 0.5.0
  * 
  * This file is licensed under 4-clause BSD, see LICENSE file for more details
  */
@@ -58,6 +58,9 @@
 	var ERR_PROPERTIES = MISSING_ERROR("Properties")
 	var ERR_MESSAGE = MISSING_ERROR("Message")
 	var ERR_TITLE = MISSING_ERROR("Title")
+	var ERR_CHANNEL_ID = MISSING_ERROR("Channel ID")
+	var ERR_CHANNEL_GROUP_ID = MISSIN_ERROR("Channel Group ID")
+	var ERR_CHANNEL_TYPE = MISSING_ERROR("Channel Type")
 
 	/**
 	 * Create an undefined string
@@ -929,11 +932,100 @@
 	 * 
 	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#PVR
 	 */
-	// FIXME: implement this
+	// FIXME: needs testing
 	var PVR = function() {
 		if (typeof rpc === undef || rpc == null)
 			throw ERR_NOT_INITIALIZED
 	}
+
+	// PVR API core methods
+	PVR.prototype = {
+		GetChannelDetails : function(channelId, properties, successCB, errorCB) {
+			if (typeof channelId === undef)
+				throw ERR_CHANNEL_ID
+			var params = {
+				channelid : channelId
+			}
+			if (typeof properties !== undef)
+				params.properties = properties
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('PVR.GetChannelDetails', params, success, error)
+		},
+		GetChannelGroupDetails : function(channelGroupId, channels, successCB, errorCB) {
+			if (typeof channelGroupId === undef)
+				throw ERR_CHANNEL_GROUP_ID
+			var params = {
+				channelgroupid : channelGroupId
+			}
+			if (typeof channels !== undef)
+				params.channels = channels
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('PVR.GetChannelGroupDetails', params, success, error)
+		},
+		GetChannelGroups : function(channelType, limits, successCB, errorCB) {
+			if (typeof channelType === undef)
+				throw ERR_CHANNEL_TYPE
+			var params = {
+				channeltype : channelType
+			}
+			if (typeof limits !== undef)
+				params.limits = limits
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('PVR.GetChannelGroups', params, success, error)
+		},
+		GetChannels : function(channelGroupId, properties, limits, successCB, errorCB) {
+			if (typeof channelGroupId === undef)
+				throw ERR_CHANNEL_GROUP_ID
+			var params = {
+				channelgroupid : channelGroupId
+			}
+			if (typeof properties !== undef)
+				params.properties = properties
+			if (typeof limits !== undef)
+				params.limits = limits
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('PVR.GetChannels', params, success, error)
+		},
+		GetProperties : function(properties, successCB, errorCB) {
+			if (typeof properties === undef)
+				throw ERR_PROPERTIES
+			var params = {
+				properties : properties
+			}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('PVR.GetProperties', params, success, error)
+		},
+		Record : function(toggle, channel, successCB, errorCB) {
+			var params = {}
+			if (typeof toggle !== undef)
+				params.toggle = toggle
+			if (typeof channel !== undef)
+				params.channel = channel
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('PVR.Record', params, success, error)
+		},
+		Scan : function(toggle, channel, successCB, errorCB) {
+			var params = {}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('PVR.Scan', params, success, error)
+		}
+	}
+
+	// PVR API convenience methods
+	PVR.prototype.getChannelDetails = PVR.prototype.GetChannelDetails
+	PVR.prototype.getChannelGroupDetails = PVR.prototype.GetChannelGroupDetails
+	PVR.prototype.getChannelGroups = PVR.prototype.GetChannelGroups
+	PVR.prototype.getChannels = PVR.prototype.GetChannels
+	PVR.prototype.getProperties = PVR.prototype.GetProperties
+	PVR.prototype.record = PVR.prototype.Record
+	PVR.prototype.scan = PVR.prototype.Scan
 
 	/**
 	 * A JS library wrapper for Player API
