@@ -3,7 +3,7 @@
  * 
  * This wrapper was written by Tamer Saadeh <tamer@tamersaadeh.com>, 2014
  * 
- * Version: 0.5.0
+ * Version: 0.5.1
  * 
  * This file is licensed under 4-clause BSD, see LICENSE file for more details
  */
@@ -1010,7 +1010,7 @@
 			var error = errorCB || errorHandler
 			rpc.call('PVR.Record', params, success, error)
 		},
-		Scan : function(toggle, channel, successCB, errorCB) {
+		Scan : function(successCB, errorCB) {
 			var params = {}
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
@@ -1696,6 +1696,7 @@
 		AudioLibrary : AudioLibrary,
 		Files : Files,
 		GUI : GUI,
+		PVR : PVR,
 		System : System,
 		VideoLibrary : VideoLibrary,
 		XBMC : _XBMC
