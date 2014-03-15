@@ -8,7 +8,6 @@
  * This file is licensed under 4-clause BSD, see LICENSE file for more details
  */
 
-// TODO: replace the dependency on jQuery/Json/JsonRpcClient
 (function(window) {
 	"use strict"
 
