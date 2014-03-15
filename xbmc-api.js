@@ -3,7 +3,7 @@
  * 
  * This wrapper was written by Tamer Saadeh <tamer@tamersaadeh.com>, 2014
  * 
- * Version: 0.5.1
+ * Version: 0.6.0
  * 
  * This file is licensed under 4-clause BSD, see LICENSE file for more details
  */
@@ -61,6 +61,7 @@
 	var ERR_CHANNEL_ID = MISSING_ERROR("Channel ID")
 	var ERR_CHANNEL_GROUP_ID = MISSIN_ERROR("Channel Group ID")
 	var ERR_CHANNEL_TYPE = MISSING_ERROR("Channel Type")
+	var ERR_TEXT = MISSING_ERROR("Text parameter")
 
 	/**
 	 * Create an undefined string
@@ -910,11 +911,118 @@
 	 * 
 	 * @see http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6#Input
 	 */
-	// FIXME: implement this
+	// FIXME: needs testing
 	var Input = function() {
 		if (typeof rpc === undef || rpc == null)
 			throw ERR_NOT_INITIALIZED
 	}
+
+	// Input API core methods
+	Input.prototype = {
+		Back : function(successCB, errorCB) {
+			var params = {}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Input.Back', params, success, error)
+		},
+		ContextMenu : function(successCB, errorCB) {
+			var params = {}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Input.ContextMenu', params, success, error)
+		},
+		Down : function(successCB, errorCB) {
+			var params = {}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Input.Down', params, success, error)
+		},
+		ExecuteAction : function(successCB, errorCB) {
+			var params = {}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Input.ExecuteAction', params, success, error)
+		},
+		Home : function(successCB, errorCB) {
+			var params = {}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Input.Home', params, success, error)
+		},
+		Info : function(successCB, errorCB) {
+			var params = {}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Input.Info', params, success, error)
+		},
+		Left : function(successCB, errorCB) {
+			var params = {}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Input.Left', params, success, error)
+		},
+		Right : function(successCB, errorCB) {
+			var params = {}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Input.Right', params, success, error)
+		},
+		Select : function(successCB, errorCB) {
+			var params = {}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Input.Select', params, success, error)
+		},
+		SendText : function(text, done, successCB, errorCB) {
+			if (typeof text === undef)
+				throw ERR_TEXT
+			var params = {
+				text : text
+			}
+			if (typeof done !== undef)
+				params.done = done
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Input.SendText', params, success, error)
+		},
+		ShowCodec : function(successCB, errorCB) {
+			var params = {}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Input.ShowCodec', params, success, error)
+		},
+		ShowOSD : function(successCB, errorCB) {
+			var params = {}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Input.ShowOSD', params, success, error)
+		},
+		Up : function(successCB, errorCB) {
+			var params = {}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Input.Up', params, success, error)
+		}
+	}
+
+	// Input API convenience methods
+	Input.prototype.back = Input.prototype.Return = Input.prototype.Back
+	Input.prototype.contextMenu = Input.prototype.ContextMenu
+	Input.prototype.down = Input.prototype.Down
+	Input.prototype.executeAction = Input.prototype.ExecuteAction
+	Input.prototype.home = Input.prototype.Home
+	Input.prototype.info = Input.prototype.Info
+	Input.prototype.left = Input.prototype.Left
+	Input.prototype.right = Input.prototype.Right
+	Input.prototype.back = Input.prototype.Return = Input.prototype.Back
+	Input.prototype.contextMenu = Input.prototype.ContextMenu
+	Input.prototype.down = Input.prototype.Down
+	Input.prototype.executeAction = Input.prototype.ExecuteAction
+	Input.prototype.select = Input.prototype.ok = Input.prototype.Ok = Input.prototype.Select
+	Input.prototype.sendText = Input.prototype.SendText
+	Input.prototype.showCodec = Input.prototype.ShowCodec
+	Input.prototype.showOSD = Input.prototype.ShowOSD
+	Input.prototype.up = Input.prototype.Up
 
 	/**
 	 * A JS library wrapper for JSONRPC API
@@ -1696,6 +1804,7 @@
 		AudioLibrary : AudioLibrary,
 		Files : Files,
 		GUI : GUI,
+		Input : Input,
 		PVR : PVR,
 		System : System,
 		VideoLibrary : VideoLibrary,
