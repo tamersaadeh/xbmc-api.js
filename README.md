@@ -17,8 +17,6 @@ All files in this repository are licensed under Creative Commons Attribution-Non
 * JSONRPC
 * Player
 * Playlist
-* PVR
-* Input
 
 ## Sample Usage
 
