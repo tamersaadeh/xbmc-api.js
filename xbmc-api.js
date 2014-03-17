@@ -3,7 +3,7 @@
  * 
  * This wrapper was written by Tamer Saadeh <tamer@tamersaadeh.com>, 2014
  * 
- * Version: 0.6.0
+ * Version: 0.7.0
  * 
  * This file is licensed under 4-clause BSD, see LICENSE file for more details
  */
@@ -1144,6 +1144,19 @@
 		if (typeof rpc === undef || rpc == null)
 			throw ERR_NOT_INITIALIZED
 	}
+
+	// Player API core methods
+	Player.prototype = {
+		GetActivePlayers : function(successCB, errorCB) {
+			var params = {}
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Player.GetActivePlayers', params, success, error)
+		}
+	}
+
+	// Player API convenience methods
+	Player.prototype.getActivePlayers = Plyer.prototype.GetActivePlayers
 
 	/**
 	 * A JS library wrapper for Playlist API
