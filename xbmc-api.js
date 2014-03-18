@@ -1152,6 +1152,18 @@
 			var success = successCB || successHandler
 			var error = errorCB || errorHandler
 			rpc.call('Player.GetActivePlayers', params, success, error)
+		},
+		GetItem : function(playerId, properties, successCB, errorCB) {
+			if (typeof playerId === undef)
+				throw ERR_PLAYER_ID
+			var params = {
+				playerid : playerId
+			}
+			if (typeof properties !== undef)
+				params.properties = properties
+			var success = successCB || successHandler
+			var error = errorCB || errorHandler
+			rpc.call('Player.GetItem', params, success, error)
 		}
 	}
 
